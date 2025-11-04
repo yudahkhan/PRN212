@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using SupperMarket.BLL.Service;
+using SupperMarket.DAL.Models;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -62,9 +64,23 @@ namespace SupermarketManager1.Duy
             {
                 return;
             }
-           
-            //? Xóa dòng thật qua Service, 
             _service.DeleteProduct(selected);
+            FillDataGrid(_service.GetAllProducts());
+        }
+
+        private void UpdateButton_Click(object sender, RoutedEventArgs e)
+        {
+            Product selected = ProductListDataGrid.SelectedItem as Product;
+            if (selected == null)
+            {
+                MessageBox.Show("Please selected before updating", "Select one", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            
+            DetailWindow detail = new();
+            detail.EditedOne = selected;
+            detail.ShowDialog();
+           
             FillDataGrid(_service.GetAllProducts());
         }
     }
