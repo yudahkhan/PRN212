@@ -34,5 +34,26 @@ namespace SupperMarket.DAL.Repositories
             _ctx = new();
             return _ctx.Warehouses.Where(w => w.Type == "Store").ToList();
         }
+
+        public void Create(Warehouse obj)
+        {
+            _ctx = new();
+            _ctx.Warehouses.Add(obj);
+            _ctx.SaveChanges();
+        }
+
+        public void Update(Warehouse obj)
+        {
+            _ctx = new();
+            _ctx.Warehouses.Update(obj);
+            _ctx.SaveChanges();
+        }
+
+        public void Delete(Warehouse obj)
+        {
+            _ctx = new();
+            _ctx.Warehouses.Remove(obj);
+            _ctx.SaveChanges();
+        }
     }
 }
