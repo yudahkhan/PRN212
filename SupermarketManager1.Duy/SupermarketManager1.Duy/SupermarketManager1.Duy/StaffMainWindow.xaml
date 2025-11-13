@@ -1,0 +1,40 @@
+<Window x:Class="SupermarketManager1.Duy.StaffMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SupermarketManager1.Duy"
+        mc:Ignorable="d"
+        Title="Staff Dashboard - Bán hàng" Height="600" Width="1000" Loaded="Window_Loaded">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Staff Dashboard - Bán hàng" Grid.Column="0" FontSize="20" FontWeight="Bold"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Label x:Name="WelcomeLabel" Content="Welcome, " FontSize="16" VerticalAlignment="Center"/>
+                <Button Content="Logout" Width="80" Height="30" Margin="10,0,0,0" Click="LogoutButton_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="0,10,0,0">
+            <StackPanel>
+                <Label Content="💰 Bán hàng" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+                <Button x:Name="SaleButton" Content="💰 Bán hàng" Height="60" Width="300" 
+                        Click="SaleButton_Click" Background="#FF9800" Foreground="White" 
+                        FontSize="16" FontWeight="Bold" Margin="0,5"/>
+                <Button x:Name="ViewInventoryButton" Content="📦 Xem Tồn kho" Height="60" Width="300" 
+                        Click="ViewInventoryButton_Click" Background="#4CAF50" Foreground="White" 
+                        FontSize="16" FontWeight="Bold" Margin="0,5"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
+

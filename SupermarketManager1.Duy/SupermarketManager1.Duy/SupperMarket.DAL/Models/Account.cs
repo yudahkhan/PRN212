@@ -21,11 +21,15 @@ public partial class Account
 
     public int RoleId { get; set; }
 
+    public int? WarehouseId { get; set; }  // ⭐ MỚI: Staff/Manager thuộc Store nào (NULL cho Admin)
+
     public DateTime? CreatedAt { get; set; }
 
     public string? Status { get; set; }
 
     public virtual Role Role { get; set; } = null!;
+
+    public virtual Warehouse? Warehouse { get; set; }  // ⭐ MỚI: Navigation property
 
     public virtual ICollection<Sale> Sales { get; set; } = new List<Sale>();
 }

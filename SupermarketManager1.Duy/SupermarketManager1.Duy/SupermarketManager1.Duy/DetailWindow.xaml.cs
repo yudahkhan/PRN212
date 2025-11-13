@@ -30,7 +30,7 @@ namespace SupermarketManager1.Duy
                 ProductIdTextBox.Text = EditedOne.ProductCode;
                 ProductNameTextBox.Text = EditedOne.NameP;
                 CategoryComboBox.SelectedValue = EditedOne.CateId;
-                ProductPriceTextBox.Text = EditedOne.Price.ToString();
+                ProductPriceTextBox.Text = EditedOne.Price?.ToString() ?? "0";
                 ProductSupplierNameTextBox.Text = EditedOne.SupplierName;
                 // BỎ: ProductQuantityTextBox.Text = EditedOne.Quantity.ToString();
                 ProductWarrantyTextBox.Text = EditedOne.Warranty;
@@ -57,12 +57,18 @@ namespace SupermarketManager1.Duy
                 }
             }
 
+            decimal? price = null;
+            if (decimal.TryParse(ProductPriceTextBox.Text, out decimal parsedPrice))
+            {
+                price = parsedPrice;
+            }
+
             Product obj = new()
             {
                 ProductCode = ProductIdTextBox.Text,
                 NameP = ProductNameTextBox.Text,
                 CateId = (int?)CategoryComboBox.SelectedValue,
-                Price = decimal.Parse(ProductPriceTextBox.Text),
+                Price = price,
                 SupplierName = ProductSupplierNameTextBox.Text,
                 // BỎ: Quantity = int.Parse(ProductQuantityTextBox.Text),
                 Warranty = ProductWarrantyTextBox.Text,

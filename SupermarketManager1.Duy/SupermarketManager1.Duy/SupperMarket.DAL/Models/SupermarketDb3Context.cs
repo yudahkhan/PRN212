@@ -68,6 +68,14 @@ public partial class SupermarketDb3Context : DbContext
                 .HasForeignKey(d => d.RoleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Account_Role");
+
+            // ⭐ MỚI: Relationship Account → Warehouse
+            entity.HasOne(d => d.Warehouse).WithMany(p => p.Accounts)
+                .HasForeignKey(d => d.WarehouseId)
+                .HasConstraintName("FK_Account_Warehouse");
+
+            // ⭐ MỚI: Index cho WarehouseId
+            entity.HasIndex(e => e.WarehouseId, "IX_Account_Warehouse");
         });
 
         modelBuilder.Entity<Category>(entity =>
@@ -106,7 +114,9 @@ public partial class SupermarketDb3Context : DbContext
 
             entity.Property(e => e.ProductCode).HasMaxLength(50);
             entity.Property(e => e.NameP).HasMaxLength(255);
-            entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.Price)
+                .HasColumnType("decimal(18, 2)")
+                .HasDefaultValue(0);  // ⭐ Cải thiện: DEFAULT 0
             entity.Property(e => e.SupplierName).HasMaxLength(255);
             entity.Property(e => e.Warranty).HasMaxLength(255);
 
@@ -142,6 +152,22 @@ public partial class SupermarketDb3Context : DbContext
                 .HasForeignKey(d => d.ProductCode)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Sale_Product");
+
+            // ⭐ MỚI: Relationship Sale → Warehouse
+            entity.HasOne(d => d.Warehouse).WithMany(p => p.Sales)
+                .HasForeignKey(d => d.WarehouseId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Sale_Warehouse");
+
+            // ⭐ MỚI: Properties cho Sales
+            entity.Property(e => e.UnitPrice).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.TotalAmount).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.SaleDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+
+            // ⭐ MỚI: Index cho WarehouseId và SaleDate
+            entity.HasIndex(e => new { e.WarehouseId, e.SaleDate }, "IX_Sale_WarehouseDate");
         });
 
         modelBuilder.Entity<Warehouse>(entity =>
@@ -151,6 +177,11 @@ public partial class SupermarketDb3Context : DbContext
             entity.Property(e => e.Address).HasMaxLength(500);
             entity.Property(e => e.Type).HasMaxLength(50);
             entity.Property(e => e.WarehouseName).HasMaxLength(255);
+
+            // ⭐ MỚI: Relationship Warehouse → Manager (Account)
+            entity.HasOne(d => d.Manager).WithMany()
+                .HasForeignKey(d => d.ManagerId)
+                .HasConstraintName("FK_Warehouse_Manager");
         });
 
         OnModelCreatingPartial(modelBuilder);

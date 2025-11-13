@@ -20,18 +20,43 @@ namespace SupermarketManager1.Duy
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             LoadWarehouses();
+            // Staff chỉ xem, không được sửa tồn kho
+            if (CurrentUser.IsStaff)
+            {
+                // Ẩn các button tăng/giảm/điều chỉnh - sẽ làm trong XAML bằng cách bind Visibility
+            }
         }
 
         private void LoadWarehouses()
         {
-            var warehouses = _warehouseService.GetAllWarehouses();
-            WarehouseComboBox.ItemsSource = warehouses;
+            List<Warehouse> warehouses;
 
-            // Mặc định chọn Kho Chính
-            var centralWarehouse = _warehouseService.GetCentralWarehouse();
-            if (centralWarehouse != null)
+            // Phân quyền: Admin thấy tất cả, Manager/Staff chỉ thấy Store của mình
+            if (CurrentUser.IsAdmin)
             {
-                WarehouseComboBox.SelectedItem = centralWarehouse;
+                warehouses = _warehouseService.GetAllWarehouses();
+                WarehouseComboBox.ItemsSource = warehouses;
+                // Mặc định chọn Kho Chính
+                var centralWarehouse = _warehouseService.GetCentralWarehouse();
+                if (centralWarehouse != null)
+                {
+                    WarehouseComboBox.SelectedItem = centralWarehouse;
+                }
+            }
+            else if (CurrentUser.IsManager || CurrentUser.IsStaff)
+            {
+                // Manager/Staff chỉ thấy Store của mình
+                if (CurrentUser.WarehouseId.HasValue)
+                {
+                    var myWarehouse = _warehouseService.GetWarehouseById(CurrentUser.WarehouseId.Value);
+                    if (myWarehouse != null)
+                    {
+                        warehouses = new List<Warehouse> { myWarehouse };
+                        WarehouseComboBox.ItemsSource = warehouses;
+                        WarehouseComboBox.SelectedItem = myWarehouse;
+                        WarehouseComboBox.IsEnabled = false; // Không cho chọn kho khác
+                    }
+                }
             }
         }
 

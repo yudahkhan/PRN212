@@ -1,0 +1,51 @@
+<Window x:Class="SupermarketManager1.Duy.ManagerMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SupermarketManager1.Duy"
+        mc:Ignorable="d"
+        Title="Manager Dashboard" Height="600" Width="1000" Loaded="Window_Loaded">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Manager Dashboard" Grid.Column="0" FontSize="20" FontWeight="Bold"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Label x:Name="WelcomeLabel" Content="Welcome, " FontSize="16" VerticalAlignment="Center"/>
+                <Button Content="Logout" Width="80" Height="30" Margin="10,0,0,0" Click="LogoutButton_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <Label Content="📦 Quản lý Store của bạn" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+                <Button x:Name="ManageInventoryButton" Content="📦 Quản lý Tồn kho" Height="60" Width="300" 
+                        Click="ManageInventoryButton_Click" Background="#4CAF50" Foreground="White" 
+                        FontSize="16" FontWeight="Bold" Margin="0,5"/>
+                <Button x:Name="TransferStockButton" Content="🚚 Yêu cầu chuyển kho" Height="60" Width="300" 
+                        Click="TransferStockButton_Click" Background="#FF5722" Foreground="White" 
+                        FontSize="16" FontWeight="Bold" Margin="0,5"/>
+                <Button x:Name="ManageStaffButton" Content="👥 Quản lý Nhân viên" Height="60" Width="300" 
+                        Click="ManageStaffButton_Click" Background="#2196F3" Foreground="White" 
+                        FontSize="16" FontWeight="Bold" Margin="0,5"/>
+                <Button x:Name="ReportButton" Content="📊 Báo cáo Doanh thu" Height="60" Width="300" 
+                        Click="ReportButton_Click" Background="#607D8B" Foreground="White" 
+                        FontSize="16" FontWeight="Bold" Margin="0,5"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
+

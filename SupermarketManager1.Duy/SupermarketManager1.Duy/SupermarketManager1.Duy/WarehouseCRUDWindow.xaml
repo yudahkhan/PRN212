@@ -1,0 +1,68 @@
+<Window x:Class="SupermarketManager1.Duy.WarehouseCRUDWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Quản lý Kho/Cửa hàng" Height="700" Width="1200" Loaded="Window_Loaded">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Label Content="🏢 QUẢN LÝ KHO/CỬA HÀNG" Grid.Row="0" FontSize="24" FontWeight="Bold" 
+               HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
+            <Button Content="➕ Tạo mới" Width="120" Height="40" Margin="0,0,10,0" 
+                    Click="CreateButton_Click" Background="#4CAF50" Foreground="White" FontWeight="Bold"/>
+            <Button Content="✏️ Sửa" Width="100" Height="40" Margin="0,0,10,0" 
+                    Click="UpdateButton_Click" Background="#2196F3" Foreground="White" FontWeight="Bold"/>
+            <Button Content="🗑️ Xóa" Width="100" Height="40" 
+                    Click="DeleteButton_Click" Background="#F44336" Foreground="White" FontWeight="Bold"/>
+        </StackPanel>
+
+        <!-- DataGrid -->
+        <DataGrid x:Name="WarehouseDataGrid" Grid.Row="2" AutoGenerateColumns="False" 
+                  IsReadOnly="True" SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding WarehouseId}" Width="50"/>
+                <DataGridTextColumn Header="Tên kho" Binding="{Binding WarehouseName}" Width="*"/>
+                <DataGridTextColumn Header="Loại" Binding="{Binding Type}" Width="100">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Type}" Value="Central">
+                                    <Setter Property="Foreground" Value="Blue"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Type}" Value="Store">
+                                    <Setter Property="Foreground" Value="Green"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Địa chỉ" Binding="{Binding Address}" Width="*"/>
+                <DataGridTextColumn Header="Manager" Binding="{Binding Manager.FullName}" Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontStyle" Value="Italic"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Manager}" Value="{x:Null}">
+                                    <Setter Property="Text" Value="(Chưa có)"/>
+                                    <Setter Property="Foreground" Value="Gray"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>
+

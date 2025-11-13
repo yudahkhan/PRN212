@@ -1,0 +1,181 @@
+using SupperMarket.BLL.Service;
+using SupperMarket.DAL.Models;
+using System;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+
+namespace SupermarketManager1.Duy
+{
+    public partial class WarehouseDetailWindow : Window
+    {
+        private WarehouseService _warehouseService = new();
+        private AccountService _accountService = new();
+
+        public Warehouse? EditedWarehouse { get; set; }
+        public bool IsEditMode => EditedWarehouse != null;
+
+        public WarehouseDetailWindow()
+        {
+            InitializeComponent();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Load danh sách Manager (chỉ những account có Role = Manager)
+            var managers = _accountService.GetAccountsByRole(2); // RoleId = 2 là Manager
+            ManagerComboBox.ItemsSource = managers;
+
+            if (IsEditMode)
+            {
+                TitleLabel.Content = "Sửa thông tin kho/cửa hàng";
+                LoadWarehouseData();
+            }
+            else
+            {
+                TitleLabel.Content = "Tạo kho/cửa hàng mới";
+            }
+        }
+
+        private void LoadWarehouseData()
+        {
+            if (EditedWarehouse == null) return;
+
+            WarehouseNameTextBox.Text = EditedWarehouse.WarehouseName;
+            AddressTextBox.Text = EditedWarehouse.Address ?? "";
+
+            // Set Type
+            foreach (ComboBoxItem item in TypeComboBox.Items)
+            {
+                if (item.Tag.ToString() == EditedWarehouse.Type)
+                {
+                    TypeComboBox.SelectedItem = item;
+                    break;
+                }
+            }
+
+            // Set Manager
+            if (EditedWarehouse.ManagerId.HasValue)
+            {
+                ManagerComboBox.SelectedValue = EditedWarehouse.ManagerId.Value;
+            }
+        }
+
+        private void TypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Hiển thị Manager dropdown chỉ khi chọn Store
+            if (TypeComboBox.SelectedItem is ComboBoxItem selectedItem && selectedItem.Tag is string type)
+            {
+                if (type == "Store")
+                {
+                    ManagerLabel.Visibility = Visibility.Visible;
+                    ManagerComboBox.Visibility = Visibility.Visible;
+                }
+                else // Central
+                {
+                    ManagerLabel.Visibility = Visibility.Collapsed;
+                    ManagerComboBox.Visibility = Visibility.Collapsed;
+                    ManagerComboBox.SelectedValue = null;
+                }
+            }
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ValidateInput())
+                return;
+
+            try
+            {
+                Warehouse warehouse;
+
+                if (IsEditMode)
+                {
+                    warehouse = EditedWarehouse!;
+                }
+                else
+                {
+                    warehouse = new Warehouse();
+                }
+
+                // Cập nhật thông tin
+                warehouse.WarehouseName = WarehouseNameTextBox.Text.Trim();
+                warehouse.Address = string.IsNullOrWhiteSpace(AddressTextBox.Text) ? null : AddressTextBox.Text.Trim();
+
+                // Type
+                if (TypeComboBox.SelectedItem is ComboBoxItem typeItem && typeItem.Tag is string type)
+                {
+                    warehouse.Type = type;
+                }
+
+                // ManagerId: NULL cho Central, có giá trị cho Store
+                if (warehouse.Type == "Store")
+                {
+                    warehouse.ManagerId = ManagerComboBox.SelectedValue as int?;
+                }
+                else // Central
+                {
+                    warehouse.ManagerId = null;
+                }
+
+                if (IsEditMode)
+                {
+                    _warehouseService.UpdateWarehouse(warehouse);
+                    MessageBox.Show("Cập nhật kho thành công!", "Thành công", 
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    _warehouseService.CreateWarehouse(warehouse);
+                    MessageBox.Show("Tạo kho thành công!", "Thành công", 
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+
+                DialogResult = true;
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private bool ValidateInput()
+        {
+            // Warehouse Name
+            if (string.IsNullOrWhiteSpace(WarehouseNameTextBox.Text))
+            {
+                MessageBox.Show("Vui lòng nhập Tên kho/cửa hàng!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                WarehouseNameTextBox.Focus();
+                return false;
+            }
+
+            // Type
+            if (TypeComboBox.SelectedItem == null)
+            {
+                MessageBox.Show("Vui lòng chọn Loại!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            // Manager (nếu là Store)
+            if (TypeComboBox.SelectedItem is ComboBoxItem typeItem && typeItem.Tag is string type)
+            {
+                if (type == "Store" && ManagerComboBox.SelectedItem == null)
+                {
+                    MessageBox.Show("Vui lòng chọn Manager cho Store!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            this.Close();
+        }
+    }
+}
+

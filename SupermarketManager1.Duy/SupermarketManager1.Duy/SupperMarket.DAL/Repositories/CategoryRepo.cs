@@ -9,11 +9,11 @@ namespace SupperMarket.DAL.Repositories
 {
     public class CategoryRepo
     {
-        private SupermarketDb3Context _cxt;
+        private SupermarketDb3Context? _ctx;
         public List<Category> GetAll()
         {
-            _cxt = new();
-            return _cxt.Categories.ToList();
+            _ctx = new();
+            return _ctx.Categories.ToList();
         }
     }
 }

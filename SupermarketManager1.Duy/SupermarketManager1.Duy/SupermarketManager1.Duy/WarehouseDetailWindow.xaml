@@ -1,0 +1,61 @@
+<Window x:Class="SupermarketManager1.Duy.WarehouseDetailWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Chi tiết Kho/Cửa hàng" Height="500" Width="600" Loaded="Window_Loaded">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Label x:Name="TitleLabel" Content="Tạo kho/cửa hàng mới" Grid.Row="0" 
+               FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+        <!-- Form -->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Warehouse Name -->
+            <Label Content="Tên kho/cửa hàng *:" Grid.Row="0" Margin="0,0,0,5"/>
+            <TextBox x:Name="WarehouseNameTextBox" Grid.Row="1" Margin="0,0,0,15"/>
+
+            <!-- Type -->
+            <Label Content="Loại *:" Grid.Row="2" Margin="0,0,0,5"/>
+            <ComboBox x:Name="TypeComboBox" Grid.Row="3" Margin="0,0,0,15" 
+                      SelectionChanged="TypeComboBox_SelectionChanged">
+                <ComboBoxItem Content="Kho Trung Tâm" Tag="Central"/>
+                <ComboBoxItem Content="Cửa hàng" Tag="Store" IsSelected="True"/>
+            </ComboBox>
+
+            <!-- Address -->
+            <Label Content="Địa chỉ:" Grid.Row="4" Margin="0,0,0,5"/>
+            <TextBox x:Name="AddressTextBox" Grid.Row="5" Margin="0,0,0,15" TextWrapping="Wrap" Height="60"/>
+
+            <!-- Manager (chỉ hiển thị khi chọn Store) -->
+            <Label x:Name="ManagerLabel" Content="Manager:" Grid.Row="6" Margin="0,0,0,5" Visibility="Collapsed"/>
+            <ComboBox x:Name="ManagerComboBox" Grid.Row="7" Margin="0,0,0,15" Visibility="Collapsed"
+                      DisplayMemberPath="FullName" SelectedValuePath="AccountId"/>
+        </Grid>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button Content="Lưu" Width="100" Height="40" Margin="0,0,10,0" 
+                    Click="SaveButton_Click" Background="#4CAF50" Foreground="White" FontWeight="Bold"/>
+            <Button Content="Hủy" Width="100" Height="40" 
+                    Click="CancelButton_Click" Background="#9E9E9E" Foreground="White"/>
+        </StackPanel>
+    </Grid>
+</Window>
+
