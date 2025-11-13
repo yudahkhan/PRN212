@@ -17,6 +17,12 @@ namespace SupperMarket.DAL.Repositories
             return _ctx.Products.Include("Cate").ToList();
             
         }
+
+        public Product? GetByCode(string productCode)
+        {
+            _ctx = new();
+            return _ctx.Products.FirstOrDefault(p => p.ProductCode == productCode);
+        }
        
         public void Create(Product obj)
         {

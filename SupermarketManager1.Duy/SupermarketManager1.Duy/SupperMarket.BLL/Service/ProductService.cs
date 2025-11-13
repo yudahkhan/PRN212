@@ -15,6 +15,12 @@ namespace SupperMarket.BLL.Service
         {
             return _repo.GetAll();
         }
+
+        public Product? GetProductByCode(string productCode)
+        {
+            return _repo.GetByCode(productCode);
+        }
+
         public void AddProduct(Product obj)
         {
             _repo.Create(obj);

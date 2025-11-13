@@ -76,6 +76,11 @@ namespace SupermarketManager1.Duy
                 ManagerComboBox.Visibility = Visibility.Collapsed; // Ẩn Manager (Central không có Manager)
                 // Chỉ cho phép sửa: WarehouseName và Address
             }
+            // ⭐ Nếu đang edit Store, không cho đổi Manager (Manager chỉ quản lý 1 store)
+            else if (EditedWarehouse.Type == "Store")
+            {
+                ManagerComboBox.IsEnabled = false; // Không cho đổi manager
+            }
         }
 
         private void TypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -125,6 +130,7 @@ namespace SupermarketManager1.Duy
 
                 // ⭐ Nếu đang edit Central Warehouse, giữ nguyên Type
                 bool isEditingCentral = IsEditMode && EditedWarehouse?.Type == "Central";
+                bool isEditingStore = IsEditMode && EditedWarehouse?.Type == "Store";
                 
                 if (isEditingCentral)
                 {
@@ -132,8 +138,15 @@ namespace SupermarketManager1.Duy
                     warehouse.Type = EditedWarehouse!.Type;
                     warehouse.ManagerId = null; // Central không có Manager
                 }
+                else if (isEditingStore)
+                {
+                    // Giữ nguyên Type và ManagerId của Store (không cho đổi)
+                    warehouse.Type = EditedWarehouse!.Type;
+                    warehouse.ManagerId = EditedWarehouse.ManagerId; // Giữ nguyên manager
+                }
                 else
                 {
+                    // Tạo mới hoặc các trường hợp khác
                     // Type
                     if (TypeComboBox.SelectedItem is ComboBoxItem typeItem && typeItem.Tag is string type)
                     {
@@ -194,10 +207,32 @@ namespace SupermarketManager1.Duy
             // Manager (nếu là Store)
             if (TypeComboBox.SelectedItem is ComboBoxItem typeItem && typeItem.Tag is string type)
             {
-                if (type == "Store" && ManagerComboBox.SelectedItem == null)
+                if (type == "Store")
                 {
-                    MessageBox.Show("Please select Manager for Store!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return false;
+                    // Khi tạo mới Store, bắt buộc phải chọn Manager
+                    if (!IsEditMode && ManagerComboBox.SelectedItem == null)
+                    {
+                        MessageBox.Show("Please select Manager for Store!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return false;
+                    }
+                    
+                    // ⭐ Kiểm tra Manager chỉ quản lý được 1 Store
+                    if (ManagerComboBox.SelectedItem is Account selectedManager)
+                    {
+                        // Kiểm tra xem Manager này đã quản lý Store khác chưa
+                        var allWarehouses = _warehouseService.GetAllWarehouses();
+                        var existingStore = allWarehouses.FirstOrDefault(w => 
+                            w.ManagerId == selectedManager.AccountId && 
+                            w.Type == "Store" &&
+                            (!IsEditMode || w.WarehouseId != EditedWarehouse?.WarehouseId)); // Loại trừ store hiện tại nếu đang edit
+                        
+                        if (existingStore != null)
+                        {
+                            MessageBox.Show($"Manager '{selectedManager.FullName}' is already managing Store '{existingStore.WarehouseName}'!\n\nEach Manager can only manage 1 Store.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            ManagerComboBox.Focus();
+                            return false;
+                        }
+                    }
                 }
             }
 
