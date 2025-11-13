@@ -3,77 +3,205 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:SupermarketManager1.Duy"
         mc:Ignorable="d"
-       Title="Admin Dashboard - Product Management" Height="600" Width="1000" Loaded="Window_Loaded">
+        Title="Admin Dashboard - Product Management" 
+        Height="862" Width="1200" 
+        WindowStartupLocation="CenterScreen"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Loaded="Window_Loaded">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Label Content="Admin Dashboard - Product Management" Grid.Column="0"/>
-            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <Label x:Name="WelcomeLabel" Content="Welcome, " FontSize="16" VerticalAlignment="Center"/>
-                <Button Content="Logout" Width="80" Height="30" Margin="10,0,0,0" Click="LogoutButton_Click"/>
-            </StackPanel>
-        </Grid>
+        <!-- Header Card -->
+        <materialDesign:Card Grid.Row="0" Padding="20" Margin="0,0,0,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Admin Dashboard" 
+                              FontSize="24" 
+                              FontWeight="Bold"
+                              Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+                    <TextBlock Text="Quản lý Sản phẩm" 
+                              FontSize="14" 
+                              Foreground="{DynamicResource MaterialDesignBodyLight}"
+                              Margin="0,5,0,0"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock x:Name="WelcomeLabel" 
+                              Text="Welcome, " 
+                              FontSize="16" 
+                              VerticalAlignment="Center"
+                              Margin="0,0,10,0"/>
+                    <Button Content="ĐĂNG XUẤT" 
+                           Style="{StaticResource MaterialDesignOutlinedButton}"
+                           Width="120" 
+                           Height="35" 
+                           Click="LogoutButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </materialDesign:Card>
 
-        <Grid Grid.Row="1" Margin="0,10,0,0">
+        <!-- Main Content -->
+        <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" Margin="0,0,0,10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="🔍 Search:" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                <TextBox x:Name="SearchTextBox" Grid.Column="1" TextChanged="SearchTextBox_TextChanged" 
-                         VerticalAlignment="Center" Margin="0,0,10,0"/>
-            </Grid>
+            <!-- Search Bar -->
+            <materialDesign:Card Grid.Row="0" Padding="15" Margin="0,0,0,10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <materialDesign:PackIcon Kind="Magnify" 
+                                            Width="24" 
+                                            Height="24" 
+                                            VerticalAlignment="Center" 
+                                            Margin="0,0,10,0"
+                                            Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+                    
+                    <TextBox x:Name="SearchTextBox" 
+                            Grid.Column="1"
+                            materialDesign:HintAssist.Hint="Tìm kiếm sản phẩm (Mã, Tên, Danh mục)..."
+                            materialDesign:HintAssist.IsFloating="False"
+                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            FontSize="14"
+                            TextChanged="SearchTextBox_TextChanged"
+                            Height="60"/>
+                </Grid>
+            </materialDesign:Card>
 
+            <!-- Data Grid and Buttons -->
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <DataGrid x:Name="ProductListDataGrid" Grid.Column="0" AutoGenerateColumns="False">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Product ID" Binding="{Binding ProductCode}" Width="*"/>
-                        <DataGridTextColumn Header="Product Name" Binding="{Binding NameP}" Width="*"/>
-                        <DataGridTextColumn Header="Price" Binding="{Binding Price, StringFormat={}{0:N0}}" Width="*"/>
-                        <DataGridTextColumn Header="Warranty" Binding="{Binding Warranty}" Width="*"/>
-                        <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*"/>
-                        <DataGridTextColumn Header="Publication Day" Binding="{Binding PublicationDay}" Width="*"/>
-                        <DataGridTextColumn Header="Supplier Name" Binding="{Binding SupplierName}" Width="*"/>
-                        <DataGridTextColumn Header="Category Name" Binding="{Binding Cate.CategoryName}" Width="*"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+                <!-- DataGrid -->
+                <materialDesign:Card Grid.Column="0" Padding="0" Margin="0,0,10,0">
+                    <DataGrid x:Name="ProductListDataGrid" 
+                             AutoGenerateColumns="False"
+                             Style="{StaticResource MaterialDesignDataGrid}"
+                             HeadersVisibility="Column"
+                             IsReadOnly="True"
+                             SelectionMode="Single"
+                             GridLinesVisibility="None"
+                             RowHeaderWidth="0">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Mã SP" Binding="{Binding ProductCode}" Width="100"/>
+                            <DataGridTextColumn Header="Tên sản phẩm" Binding="{Binding NameP}" Width="*"/>
+                            <DataGridTextColumn Header="Giá" Binding="{Binding Price, StringFormat={}{0:N0} VNĐ}" Width="120"/>
+                            <DataGridTextColumn Header="Bảo hành" Binding="{Binding Warranty}" Width="100"/>
+                            <DataGridTextColumn Header="Mô tả" Binding="{Binding Description}" Width="*"/>
+                            <DataGridTextColumn Header="Ngày xuất bản" Binding="{Binding PublicationDay, StringFormat={}{0:dd/MM/yyyy}}" Width="120"/>
+                            <DataGridTextColumn Header="Nhà cung cấp" Binding="{Binding SupplierName}" Width="150"/>
+                            <DataGridTextColumn Header="Danh mục" Binding="{Binding Cate.CategoryName}" Width="120"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </materialDesign:Card>
 
-                <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="200" VerticalAlignment="Top">
-                    <Button x:Name="CreateButton" Content="Create Product" Height="50" Margin="0,0,0,5" Click="CreateButton_Click"/>
-                    <Button x:Name="UpdateButton" Content="Update Product" Height="50" Margin="0,5,0,5" Click="UpdateButton_Click" />
-                    <Button x:Name="DeleteButton" Content="Delete Product" Height="50" Margin="0,5,0,5" Click="DeleteButton_Click"/>
-                    <Separator Margin="0,10"/>
-                    <Button x:Name="ManageWarehouseButton" Content="📦 Quản lý Tồn kho" Height="50" Margin="0,5,0,5" Click="ManageWarehouseButton_Click" Background="#FF9800" Foreground="White" FontWeight="Bold"/>
-                    <Button x:Name="TransferStockButton" Content="🚚 Chuyển kho" Height="50" Margin="0,5,0,5" Click="TransferStockButton_Click" Background="#FF5722" Foreground="White" FontWeight="Bold"/>
-                    <Button x:Name="ManageWarehouseCRUDButton" Content="🏢 Quản lý Kho/Cửa hàng" Height="50" Margin="0,5,0,5" Click="ManageWarehouseCRUDButton_Click" Background="#9C27B0" Foreground="White" FontWeight="Bold"/>
-                    <Button x:Name="ManageAccountButton" Content="👥 Quản lý Tài khoản" Height="50" Margin="0,5,0,5" Click="ManageAccountButton_Click" Background="#2196F3" Foreground="White" FontWeight="Bold"/>
-                    <Button x:Name="ReportButton" Content="📊 Báo cáo" Height="50" Margin="0,5,0,5" Click="ReportButton_Click" Background="#607D8B" Foreground="White" FontWeight="Bold"/>
-                    <Separator Margin="0,10"/>
-                </StackPanel>
+                <!-- Action Buttons -->
+                <materialDesign:Card Grid.Column="1" Padding="10" Width="220">
+                    <StackPanel>
+                        <TextBlock Text="Sản phẩm" 
+                                  FontSize="16" 
+                                  FontWeight="Bold"
+                                  Margin="0,0,0,10"
+                                  Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+                        
+                        <Button x:Name="CreateButton" 
+                               Content="➕ TẠO MỚI" 
+                               Style="{StaticResource MaterialDesignRaisedButton}"
+                               Height="45" 
+                               Margin="0,0,0,8" 
+                               Click="CreateButton_Click"
+                               FontWeight="SemiBold"/>
+                        
+                        <Button x:Name="UpdateButton" 
+                               Content="✏️ SỬA" 
+                               Style="{StaticResource MaterialDesignOutlinedButton}"
+                               Height="45" 
+                               Margin="0,0,0,8" 
+                               Click="UpdateButton_Click"/>
+                        
+                        <Button x:Name="DeleteButton" 
+                               Content="🗑️ XÓA" 
+                               Style="{StaticResource MaterialDesignOutlinedButton}"
+                               Height="45" 
+                               Margin="0,0,0,15" 
+                               Click="DeleteButton_Click"
+                               Foreground="Red"/>
+                        
+                        <Separator Margin="0,0,0,10"/>
+                        
+                        <TextBlock Text="Quản lý" 
+                                  FontSize="16" 
+                                  FontWeight="Bold"
+                                  Margin="0,0,0,10"
+                                  Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+                        
+                        <Button x:Name="ManageWarehouseButton" 
+                               Content="📦 Tồn kho" 
+                               Style="{StaticResource MaterialDesignRaisedButton}"
+                               Height="45" 
+                               Margin="0,0,0,8" 
+                               Click="ManageWarehouseButton_Click"
+                               Background="#FF9800"/>
+                        
+                        <Button x:Name="TransferStockButton" 
+                               Content="🚚 Chuyển kho" 
+                               Style="{StaticResource MaterialDesignRaisedButton}"
+                               Height="45" 
+                               Margin="0,0,0,8" 
+                               Click="TransferStockButton_Click"
+                               Background="#FF5722"/>
+                        
+                        <Button x:Name="ManageWarehouseCRUDButton" 
+                               Content="🏢 Kho/Cửa hàng" 
+                               Style="{StaticResource MaterialDesignRaisedButton}"
+                               Height="45" 
+                               Margin="0,0,0,8" 
+                               Click="ManageWarehouseCRUDButton_Click"
+                               Background="#9C27B0"/>
+                        
+                        <Button x:Name="ManageAccountButton" 
+                               Content="👥 Tài khoản" 
+                               Style="{StaticResource MaterialDesignRaisedButton}"
+                               Height="45" 
+                               Margin="0,0,0,8" 
+                               Click="ManageAccountButton_Click"
+                               Background="#2196F3"/>
+                        
+                        <Button x:Name="ReportButton" 
+                               Content="📊 Báo cáo" 
+                               Style="{StaticResource MaterialDesignRaisedButton}"
+                               Height="45" 
+                               Margin="0,0,0,0" 
+                               Click="ReportButton_Click"
+                               Background="#607D8B"/>
+                    </StackPanel>
+                </materialDesign:Card>
             </Grid>
         </Grid>
     </Grid>
 </Window>
-

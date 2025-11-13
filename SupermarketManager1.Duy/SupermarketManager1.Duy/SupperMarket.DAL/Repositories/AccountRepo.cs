@@ -22,14 +22,17 @@ namespace SupperMarket.DAL.Repositories
                 .FirstOrDefault(a => a.Username == username);
         }
 
-        // Validate login (username và password)
-        public Account? ValidateLogin(string username, string password)
+        // Validate login (username/email và password)
+        public Account? ValidateLogin(string usernameOrEmail, string password)
         {
             _ctx = new();
+            // Cho phép login bằng Username HOẶC Email
             var account = _ctx.Accounts
                 .Include(a => a.Role)
                 .Include(a => a.Warehouse)
-                .FirstOrDefault(a => a.Username == username && a.Password == password);
+                .FirstOrDefault(a => 
+                    (a.Username == usernameOrEmail || a.Email == usernameOrEmail) 
+                    && a.Password == password);
 
             // Kiểm tra status
             if (account != null && account.Status == "Active")

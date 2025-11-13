@@ -3,49 +3,103 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}"
+        
         xmlns:local="clr-namespace:SupermarketManager1.Duy"
         mc:Ignorable="d"
-        Title="Manager Dashboard" Height="600" Width="1000" Loaded="Window_Loaded">
+        Title="Manager Dashboard" Height="632" Width="1000" Loaded="Window_Loaded">
+
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Label Content="Manager Dashboard" Grid.Column="0" FontSize="20" FontWeight="Bold"/>
-            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <Label x:Name="WelcomeLabel" Content="Welcome, " FontSize="16" VerticalAlignment="Center"/>
-                <Button Content="Logout" Width="80" Height="30" Margin="10,0,0,0" Click="LogoutButton_Click"/>
-            </StackPanel>
-        </Grid>
+        <materialDesign:Card Grid.Row="0" Padding="20" Margin="0,0,0,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="1" Margin="0,10,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    
+                    <TextBlock Text="Manager Dashboard" 
+                              FontSize="24" FontWeight="Bold"
+                              VerticalAlignment="Center"
+                              Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+                </StackPanel>
 
-            <StackPanel Grid.Column="0">
-                <Label Content="📦 Quản lý Store của bạn" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
-                <Button x:Name="ManageInventoryButton" Content="📦 Quản lý Tồn kho" Height="60" Width="300" 
-                        Click="ManageInventoryButton_Click" Background="#4CAF50" Foreground="White" 
-                        FontSize="16" FontWeight="Bold" Margin="0,5"/>
-                <Button x:Name="TransferStockButton" Content="🚚 Yêu cầu chuyển kho" Height="60" Width="300" 
-                        Click="TransferStockButton_Click" Background="#FF5722" Foreground="White" 
-                        FontSize="16" FontWeight="Bold" Margin="0,5"/>
-                <Button x:Name="ManageStaffButton" Content="👥 Quản lý Nhân viên" Height="60" Width="300" 
-                        Click="ManageStaffButton_Click" Background="#2196F3" Foreground="White" 
-                        FontSize="16" FontWeight="Bold" Margin="0,5"/>
-                <Button x:Name="ReportButton" Content="📊 Báo cáo Doanh thu" Height="60" Width="300" 
-                        Click="ReportButton_Click" Background="#607D8B" Foreground="White" 
-                        FontSize="16" FontWeight="Bold" Margin="0,5"/>
-            </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock x:Name="WelcomeLabel" Text="Welcome, " 
+                              FontSize="16" 
+                              VerticalAlignment="Center"
+                              Margin="0,0,15,0"/>
+                    <Button Content="Logout" 
+                            Style="{StaticResource MaterialDesignOutlinedButton}"
+                            Width="100" Height="35" 
+                            Click="LogoutButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </materialDesign:Card>
+
+        <Grid Grid.Row="1" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">
+
+            <materialDesign:Card Padding="30" Width="450">
+                <StackPanel>
+                    <TextBlock Text="Quản lý Store của bạn" 
+                               FontSize="18" FontWeight="Bold" Margin="0,0,0,20"
+                               HorizontalAlignment="Center"
+                               Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+
+                    <Button x:Name="ManageInventoryButton" Height="60" 
+                            Click="ManageInventoryButton_Click" 
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            FontSize="16" FontWeight="Bold" Margin="0,5">
+                        <StackPanel Orientation="Horizontal">
+                            
+                            <TextBlock Text="Quản lý Tồn kho"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="TransferStockButton" Height="60" 
+                            Click="TransferStockButton_Click" 
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            FontSize="16" FontWeight="Bold" Margin="0,5">
+                        <StackPanel Orientation="Horizontal">
+                            
+                            <TextBlock Text="Yêu cầu chuyển kho"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="ManageStaffButton" Height="60" 
+                            Click="ManageStaffButton_Click" 
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            FontSize="16" FontWeight="Bold" Margin="0,5">
+                        <StackPanel Orientation="Horizontal">
+                            
+                            <TextBlock Text="Quản lý Nhân viên"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="ReportButton" Height="60" 
+                            Click="ReportButton_Click" 
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            FontSize="16" FontWeight="Bold" Margin="0,5">
+                        <StackPanel Orientation="Horizontal">
+                            
+                            <TextBlock Text="Báo cáo Doanh thu"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </materialDesign:Card>
+
         </Grid>
     </Grid>
 </Window>
-

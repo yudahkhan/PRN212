@@ -23,7 +23,11 @@ namespace SupermarketManager1.Duy
             // Staff chỉ xem, không được sửa tồn kho
             if (CurrentUser.IsStaff)
             {
-                // Ẩn các button tăng/giảm/điều chỉnh - sẽ làm trong XAML bằng cách bind Visibility
+                // Ẩn cột "Hành động" cho Staff
+                if (InventoryDataGrid.Columns.Count > 4)
+                {
+                    InventoryDataGrid.Columns[4].Visibility = Visibility.Collapsed;
+                }
             }
         }
 

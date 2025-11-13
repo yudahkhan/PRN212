@@ -27,7 +27,44 @@ namespace SupermarketManager1.Duy
         private void LoadWarehouses()
         {
             // Giữ lại item "Tất cả" đã có trong XAML
-            var warehouses = _warehouseService.GetAllWarehouses();
+            List<Warehouse> warehouses;
+            
+            // Phân quyền: Admin thấy tất cả, Manager chỉ thấy Store của mình
+            if (CurrentUser.IsAdmin)
+            {
+                warehouses = _warehouseService.GetAllWarehouses();
+            }
+            else if (CurrentUser.IsManager)
+            {
+                // Manager chỉ thấy Store của mình
+                if (CurrentUser.WarehouseId.HasValue)
+                {
+                    var managerStore = _warehouseService.GetWarehouseById(CurrentUser.WarehouseId.Value);
+                    if (managerStore != null)
+                    {
+                        warehouses = new List<Warehouse> { managerStore };
+                        // Tự động chọn Store của Manager và disable ComboBox
+                        WarehouseFilterComboBox.IsEnabled = false;
+                    }
+                    else
+                    {
+                        warehouses = new List<Warehouse>();
+                    }
+                }
+                else
+                {
+                    warehouses = new List<Warehouse>();
+                }
+            }
+            else
+            {
+                // Staff không có quyền xem báo cáo
+                MessageBox.Show("Bạn không có quyền xem báo cáo!", "Lỗi", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Close();
+                return;
+            }
+
             foreach (var warehouse in warehouses)
             {
                 ComboBoxItem item = new ComboBoxItem
@@ -36,6 +73,12 @@ namespace SupermarketManager1.Duy
                     Tag = warehouse.WarehouseId
                 };
                 WarehouseFilterComboBox.Items.Add(item);
+            }
+            
+            // Tự động chọn item đầu tiên cho Manager
+            if (CurrentUser.IsManager && warehouses.Count > 0)
+            {
+                WarehouseFilterComboBox.SelectedIndex = 0;
             }
         }
 
@@ -51,6 +94,12 @@ namespace SupermarketManager1.Duy
 
         private void LoadSales()
         {
+            // Kiểm tra null để tránh NullReferenceException
+            if (WarehouseFilterComboBox == null || FromDatePicker == null || 
+                ToDatePicker == null || SalesDataGrid == null || 
+                TotalRevenueLabel == null || TotalOrdersLabel == null)
+                return;
+
             List<Sale> sales;
 
             // Lọc theo Warehouse
@@ -109,16 +158,22 @@ namespace SupermarketManager1.Duy
                 }
             }
 
+            // Đảm bảo sales không null
+            if (sales == null)
+            {
+                sales = new List<Sale>();
+            }
+
             // Hiển thị
             SalesDataGrid.ItemsSource = null;
             SalesDataGrid.ItemsSource = sales;
 
-            // Tính tổng
-            decimal totalRevenue = sales.Sum(s => s.TotalAmount);
-            int totalOrders = sales.Count;
+            // Tính tổng (kiểm tra null để tránh lỗi)
+            decimal totalRevenue = sales?.Sum(s => s?.TotalAmount ?? 0) ?? 0;
+            int totalOrders = sales?.Count ?? 0;
 
-            TotalRevenueLabel.Content = $"{totalRevenue:N0} VNĐ";
-            TotalOrdersLabel.Content = totalOrders.ToString();
+            TotalRevenueLabel.Text = $"{totalRevenue:N0} VNĐ";
+            TotalOrdersLabel.Text = totalOrders.ToString();
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

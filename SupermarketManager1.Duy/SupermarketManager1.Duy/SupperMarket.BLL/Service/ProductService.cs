@@ -23,9 +23,9 @@ namespace SupperMarket.BLL.Service
         {
             _repo.Update(obj);
         }
-        public void DeleteProduct(Product obj)
+        public void DeleteProduct(Product obj, bool deleteInventory = false)
         {
-            _repo.Delete(obj);
+            _repo.Delete(obj, deleteInventory);
         }
     }
 }

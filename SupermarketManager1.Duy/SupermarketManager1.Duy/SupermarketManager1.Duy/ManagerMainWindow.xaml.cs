@@ -14,7 +14,7 @@ namespace SupermarketManager1.Duy
             if (CurrentUser.IsLoggedIn)
             {
                 string storeName = CurrentUser.Account?.Warehouse?.WarehouseName ?? "Store";
-                WelcomeLabel.Content = $"Welcome, {CurrentUser.Account?.FullName} - {storeName}";
+                WelcomeLabel.Text = $"Welcome, {CurrentUser.Account?.FullName} - {storeName}";
             }
         }
 

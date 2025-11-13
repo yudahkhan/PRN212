@@ -22,18 +22,27 @@ namespace SupermarketManager1.Duy
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            // Kiểm tra null
+            if (ManagerComboBox == null || TypeComboBox == null)
+                return;
+
             // Load danh sách Manager (chỉ những account có Role = Manager)
             var managers = _accountService.GetAccountsByRole(2); // RoleId = 2 là Manager
             ManagerComboBox.ItemsSource = managers;
 
             if (IsEditMode)
             {
-                TitleLabel.Content = "Sửa thông tin kho/cửa hàng";
+                TitleLabel.Text = "Sửa thông tin kho/cửa hàng";
                 LoadWarehouseData();
             }
             else
             {
-                TitleLabel.Content = "Tạo kho/cửa hàng mới";
+                TitleLabel.Text = "Tạo kho/cửa hàng mới";
+                // Khi tạo mới, nếu mặc định chọn "Cửa hàng" thì hiển thị ManagerComboBox
+                if (TypeComboBox.SelectedItem is ComboBoxItem selectedItem && selectedItem.Tag is string type && type == "Store")
+                {
+                    ManagerComboBox.Visibility = Visibility.Visible;
+                }
             }
         }
 
@@ -63,17 +72,21 @@ namespace SupermarketManager1.Duy
 
         private void TypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // Kiểm tra null để tránh NullReferenceException
+            if (TypeComboBox == null || ManagerComboBox == null)
+                return;
+
             // Hiển thị Manager dropdown chỉ khi chọn Store
             if (TypeComboBox.SelectedItem is ComboBoxItem selectedItem && selectedItem.Tag is string type)
             {
                 if (type == "Store")
                 {
-                    ManagerLabel.Visibility = Visibility.Visible;
+                    // ManagerLabel.Visibility = Visibility.Visible; // Không có trong XAML
                     ManagerComboBox.Visibility = Visibility.Visible;
                 }
                 else // Central
                 {
-                    ManagerLabel.Visibility = Visibility.Collapsed;
+                    // ManagerLabel.Visibility = Visibility.Collapsed; // Không có trong XAML
                     ManagerComboBox.Visibility = Visibility.Collapsed;
                     ManagerComboBox.SelectedValue = null;
                 }

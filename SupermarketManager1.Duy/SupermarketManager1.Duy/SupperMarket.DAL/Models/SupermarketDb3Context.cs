@@ -115,8 +115,9 @@ public partial class SupermarketDb3Context : DbContext
             entity.Property(e => e.ProductCode).HasMaxLength(50);
             entity.Property(e => e.NameP).HasMaxLength(255);
             entity.Property(e => e.Price)
-                .HasColumnType("decimal(18, 2)")
-                .HasDefaultValue(0);  // ⭐ Cải thiện: DEFAULT 0
+                .HasColumnType("decimal(18, 2)");
+                // ⭐ BỎ HasDefaultValue vì Price là nullable decimal
+                // Nếu muốn set default, dùng: .HasDefaultValue(0m) nhưng không cần thiết cho nullable
             entity.Property(e => e.SupplierName).HasMaxLength(255);
             entity.Property(e => e.Warranty).HasMaxLength(255);
 
@@ -168,6 +169,9 @@ public partial class SupermarketDb3Context : DbContext
 
             // ⭐ MỚI: Index cho WarehouseId và SaleDate
             entity.HasIndex(e => new { e.WarehouseId, e.SaleDate }, "IX_Sale_WarehouseDate");
+
+            // ⭐ QUAN TRỌNG: Tắt OUTPUT clause để tương thích với trigger
+            entity.ToTable(tb => tb.HasTrigger("trg_AfterSale_UpdateInventory"));
         });
 
         modelBuilder.Entity<Warehouse>(entity =>

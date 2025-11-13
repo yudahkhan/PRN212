@@ -20,7 +20,7 @@ namespace SupermarketManager1.Duy
         {
             if (CurrentUser.IsLoggedIn)
             {
-                WelcomeLabel.Content = $"Welcome, {CurrentUser.Account?.FullName} (Admin)";
+                WelcomeLabel.Text = $"Welcome, {CurrentUser.Account?.FullName} (Admin)";
             }
             LoadProducts();
         }
@@ -57,16 +57,69 @@ namespace SupermarketManager1.Duy
             Product? selected = ProductListDataGrid.SelectedItem as Product;
             if (selected == null)
             {
-                MessageBox.Show("Please choose a line to select", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Vui lòng chọn sản phẩm cần xóa!", "Thông báo", 
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            MessageBoxResult answer = MessageBox.Show("Are you sure?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            MessageBoxResult answer = MessageBox.Show(
+                $"Bạn có chắc muốn xóa sản phẩm:\n\nMã: {selected.ProductCode}\nTên: {selected.NameP}?",
+                "Xác nhận xóa", 
+                MessageBoxButton.YesNo, 
+                MessageBoxImage.Question);
+            
             if (answer == MessageBoxResult.No)
             {
                 return;
             }
-            _service.DeleteProduct(selected);
-            FillDataGrid(_service.GetAllProducts());
+
+            try
+            {
+                _service.DeleteProduct(selected);
+                MessageBox.Show("Xóa sản phẩm thành công!", "Thành công", 
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                FillDataGrid(_service.GetAllProducts());
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Kiểm tra xem có phải lỗi do tồn kho không
+                if (ex.Message.Contains("tồn kho"))
+                {
+                    // Hỏi người dùng có muốn xóa cả tồn kho không
+                    MessageBoxResult deleteInventory = MessageBox.Show(
+                        ex.Message + "\n\nBạn có muốn xóa cả tồn kho của sản phẩm này?",
+                        "Xác nhận xóa tồn kho",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+
+                    if (deleteInventory == MessageBoxResult.Yes)
+                    {
+                        try
+                        {
+                            _service.DeleteProduct(selected, deleteInventory: true);
+                            MessageBox.Show("Xóa sản phẩm và tồn kho thành công!", "Thành công", 
+                                MessageBoxButton.OK, MessageBoxImage.Information);
+                            FillDataGrid(_service.GetAllProducts());
+                        }
+                        catch (Exception ex2)
+                        {
+                            MessageBox.Show($"Lỗi khi xóa sản phẩm: {ex2.Message}", "Lỗi", 
+                                MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }
+                else
+                {
+                    // Lỗi khác (ví dụ: có lịch sử bán hàng)
+                    MessageBox.Show(ex.Message, "Không thể xóa", 
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi xóa sản phẩm: {ex.Message}", "Lỗi", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)

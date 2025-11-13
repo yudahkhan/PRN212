@@ -185,7 +185,7 @@ namespace SupermarketManager1.Duy
 
             // Tính tổng tiền
             decimal total = _cart.Sum(c => c.TotalAmount);
-            TotalAmountLabel.Content = $"{total:N0} VNĐ";
+            TotalAmountLabel.Text = $"{total:N0} VNĐ";
         }
 
         // Thanh toán

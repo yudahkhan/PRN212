@@ -25,7 +25,8 @@ namespace SupermarketManager1.Duy
 
             if (EditedOne != null)
             {
-                DetailWindowModeLabel.Content = "Edit product details";
+                DetailWindowModeLabel.Text = "Edit product details";
+                ProductIdTextBox.IsReadOnly = true; // Không cho sửa ProductCode khi edit
                 ProductIdTextBox.IsEnabled = false;
                 ProductIdTextBox.Text = EditedOne.ProductCode;
                 ProductNameTextBox.Text = EditedOne.NameP;
@@ -39,7 +40,11 @@ namespace SupermarketManager1.Duy
             }
             else
             {
-                DetailWindowModeLabel.Content = "Add new product";
+                DetailWindowModeLabel.Text = "Add new product";
+                ProductIdTextBox.IsReadOnly = false; // Cho phép nhập khi tạo mới
+                ProductIdTextBox.IsEnabled = true;
+                ProductIdTextBox.Clear();
+                ProductIdTextBox.Focus(); // Tự động focus vào ProductIdTextBox
             }
         }
 
@@ -65,14 +70,14 @@ namespace SupermarketManager1.Duy
 
             Product obj = new()
             {
-                ProductCode = ProductIdTextBox.Text,
-                NameP = ProductNameTextBox.Text,
+                ProductCode = ProductIdTextBox.Text ?? "",
+                NameP = ProductNameTextBox.Text ?? "",
                 CateId = (int?)CategoryComboBox.SelectedValue,
                 Price = price,
-                SupplierName = ProductSupplierNameTextBox.Text,
+                SupplierName = string.IsNullOrWhiteSpace(ProductSupplierNameTextBox.Text) ? null : ProductSupplierNameTextBox.Text,
                 // BỎ: Quantity = int.Parse(ProductQuantityTextBox.Text),
-                Warranty = ProductWarrantyTextBox.Text,
-                Description = ProductDescriptionTextBox.Text,
+                Warranty = string.IsNullOrWhiteSpace(ProductWarrantyTextBox.Text) ? null : ProductWarrantyTextBox.Text,
+                Description = string.IsNullOrWhiteSpace(ProductDescriptionTextBox.Text) ? null : ProductDescriptionTextBox.Text,
                 PublicationDay = publicationDay
             };
 

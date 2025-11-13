@@ -31,23 +31,40 @@ namespace SupermarketManager1.Duy
 
         private void ApplyFilter()
         {
+            // Kiểm tra null để tránh NullReferenceException
+            if (RoleFilterComboBox == null || AccountDataGrid == null || _allAccounts == null)
+                return;
+
+            List<Account> filtered;
+
+            // Kiểm tra SelectedItem
             if (RoleFilterComboBox.SelectedItem is ComboBoxItem selectedItem && selectedItem.Tag is string roleTag)
             {
-                int roleId = int.Parse(roleTag);
-                List<Account> filtered;
-
-                if (roleId == 0) // Tất cả
+                if (int.TryParse(roleTag, out int roleId))
                 {
-                    filtered = _allAccounts;
+                    if (roleId == 0) // Tất cả
+                    {
+                        filtered = _allAccounts;
+                    }
+                    else
+                    {
+                        filtered = _allAccounts.Where(a => a.RoleId == roleId).ToList();
+                    }
                 }
                 else
                 {
-                    filtered = _allAccounts.Where(a => a.RoleId == roleId).ToList();
+                    // Nếu không parse được, hiển thị tất cả
+                    filtered = _allAccounts;
                 }
-
-                AccountDataGrid.ItemsSource = null;
-                AccountDataGrid.ItemsSource = filtered;
             }
+            else
+            {
+                // Nếu không có item được chọn, hiển thị tất cả
+                filtered = _allAccounts;
+            }
+
+            AccountDataGrid.ItemsSource = null;
+            AccountDataGrid.ItemsSource = filtered;
         }
 
         private void RoleFilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

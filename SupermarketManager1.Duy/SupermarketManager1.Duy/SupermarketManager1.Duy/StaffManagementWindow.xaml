@@ -3,59 +3,97 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}"
+        
+        xmlns:local="clr-namespace:SupermarketManager1.Duy"
         mc:Ignorable="d"
-        Title="Quản lý Nhân viên" Height="600" Width="1000" Loaded="Window_Loaded">
-    <Grid Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        Title="Quản lý Nhân viên" Height="608" Width="1000" Loaded="Window_Loaded">
 
-        <!-- Header -->
-        <Label Content="👥 QUẢN LÝ NHÂN VIÊN" Grid.Row="0" FontSize="24" FontWeight="Bold" 
-               HorizontalAlignment="Center" Margin="0,0,0,10"/>
+    <materialDesign:Card Padding="20" Margin="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <!-- Buttons -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
-            <Button Content="➕ Tạo mới" Width="120" Height="40" Margin="0,0,10,0" 
-                    Click="CreateButton_Click" Background="#4CAF50" Foreground="White" FontWeight="Bold"/>
-            <Button Content="✏️ Sửa" Width="100" Height="40" Margin="0,0,10,0" 
-                    Click="UpdateButton_Click" Background="#2196F3" Foreground="White" FontWeight="Bold"/>
-            <Button Content="🗑️ Xóa" Width="100" Height="40" 
-                    Click="DeleteButton_Click" Background="#F44336" Foreground="White" FontWeight="Bold"/>
-        </StackPanel>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
+               
+                <TextBlock Text="QUẢN LÝ NHÂN VIÊN" 
+                           FontSize="24" FontWeight="Bold" 
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+            </StackPanel>
 
-        <!-- DataGrid -->
-        <DataGrid x:Name="StaffDataGrid" Grid.Row="2" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding AccountId}" Width="50"/>
-                <DataGridTextColumn Header="Username" Binding="{Binding Username}" Width="120"/>
-                <DataGridTextColumn Header="Họ tên" Binding="{Binding FullName}" Width="*"/>
-                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200"/>
-                <DataGridTextColumn Header="SĐT" Binding="{Binding PhoneNumber}" Width="120"/>
-                <DataGridTextColumn Header="Trạng thái" Binding="{Binding Status}" Width="100">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Status}" Value="Active">
-                                    <Setter Property="Foreground" Value="Green"/>
-                                    <Setter Property="FontWeight" Value="Bold"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Status}" Value="Inactive">
-                                    <Setter Property="Foreground" Value="Gray"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Status}" Value="Locked">
-                                    <Setter Property="Foreground" Value="Red"/>
-                                    <Setter Property="FontWeight" Value="Bold"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Ngày tạo" Binding="{Binding CreatedAt, StringFormat={}{0:dd/MM/yyyy}}" Width="120"/>
-            </DataGrid.Columns>
-        </DataGrid>
-    </Grid>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,-23,10">
+                <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                        Click="CreateButton_Click" Width="120" Height="40" Margin="0,0,10,0">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Plus" Margin="0,0,5,0"/>
+                        <TextBlock Text="Tạo mới"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Click="UpdateButton_Click" Width="100" Height="40" Margin="0,0,10,0">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Pencil" Margin="0,0,5,0"/>
+                        <TextBlock Text="Sửa"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                        Click="DeleteButton_Click" Width="100" Height="40" 
+                        Background="Red" BorderBrush="Red">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Delete" Margin="0,0,5,0"/>
+                        <TextBlock Text="Xóa"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
+            <DataGrid x:Name="StaffDataGrid" Grid.Row="2" 
+                      Style="{StaticResource MaterialDesignDataGrid}"
+                      HeadersVisibility="Column"
+                      IsReadOnly="True"
+                      SelectionMode="Single"
+                      GridLinesVisibility="None"
+                      RowHeaderWidth="0"
+                      AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding AccountId}" Width="50"/>
+                    <DataGridTextColumn Header="Username" Binding="{Binding Username}" Width="120"/>
+                    <DataGridTextColumn Header="Họ tên" Binding="{Binding FullName}" Width="*"/>
+                    <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200"/>
+                    <DataGridTextColumn Header="SĐT" Binding="{Binding PhoneNumber}" Width="120"/>
+                    <DataGridTextColumn Header="Trạng thái" Binding="{Binding Status}" Width="100">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Status}" Value="Active">
+                                        <Setter Property="Foreground" Value="Green"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="Inactive">
+                                        <Setter Property="Foreground" Value="Gray"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="Locked">
+                                        <Setter Property="Foreground" Value="Red"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Ngày tạo" Binding="{Binding CreatedAt, StringFormat={}{0:dd/MM/yyyy}}" Width="120"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </materialDesign:Card>
 </Window>
-

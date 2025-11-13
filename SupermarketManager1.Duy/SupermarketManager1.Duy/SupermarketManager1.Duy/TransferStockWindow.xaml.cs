@@ -29,9 +29,49 @@ namespace SupermarketManager1.Duy
 
         private void LoadWarehouses()
         {
-            var warehouses = _warehouseService.GetAllWarehouses();
+            List<Warehouse> warehouses;
+            
+            // Phân quyền: Admin thấy tất cả, Manager chỉ chuyển từ Kho Trung Tâm
+            if (CurrentUser.IsAdmin)
+            {
+                warehouses = _warehouseService.GetAllWarehouses();
+            }
+            else if (CurrentUser.IsManager)
+            {
+                // Manager chỉ có thể chuyển từ Kho Trung Tâm → Store của mình
+                var centralWarehouse = _warehouseService.GetCentralWarehouse();
+                warehouses = new List<Warehouse>();
+                if (centralWarehouse != null)
+                {
+                    warehouses.Add(centralWarehouse);
+                }
+                
+                // Kho đích chỉ là Store của Manager
+                if (CurrentUser.WarehouseId.HasValue)
+                {
+                    var managerStore = _warehouseService.GetWarehouseById(CurrentUser.WarehouseId.Value);
+                    if (managerStore != null)
+                    {
+                        ToWarehouseComboBox.ItemsSource = new List<Warehouse> { managerStore };
+                        ToWarehouseComboBox.SelectedItem = managerStore;
+                        ToWarehouseComboBox.IsEnabled = false; // Không cho chọn kho khác
+                    }
+                }
+            }
+            else
+            {
+                // Staff không có quyền chuyển kho
+                MessageBox.Show("Bạn không có quyền chuyển kho!", "Lỗi", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Close();
+                return;
+            }
+
             FromWarehouseComboBox.ItemsSource = warehouses;
-            ToWarehouseComboBox.ItemsSource = warehouses;
+            if (warehouses.Count > 0)
+            {
+                FromWarehouseComboBox.SelectedItem = warehouses[0];
+            }
         }
 
         private void FromWarehouseComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -64,7 +104,7 @@ namespace SupermarketManager1.Duy
 
                 ProductComboBox.ItemsSource = _availableProducts;
                 ProductComboBox.SelectedItem = null;
-                StockInfoLabel.Content = "Tồn kho: 0";
+                StockInfoLabel.Text = "Tồn kho: 0";
             }
         }
 
@@ -72,7 +112,7 @@ namespace SupermarketManager1.Duy
         {
             if (ProductComboBox.SelectedItem is Inventory selected)
             {
-                StockInfoLabel.Content = $"Tồn kho: {selected.Quantity}";
+                StockInfoLabel.Text = $"Tồn kho: {selected.Quantity}";
                 QuantityTextBox.Text = "1";
             }
         }

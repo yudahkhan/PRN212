@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
+using System.Data.Common;
 using SupperMarket.DAL.Models;
 using System;
 using System.Collections.Generic;
@@ -16,8 +18,82 @@ namespace SupperMarket.DAL.Repositories
         public void Create(Sale sale)
         {
             _ctx = new();
-            _ctx.Sales.Add(sale);
-            _ctx.SaveChanges();
+            
+            // Vì bảng Sales có trigger, EF Core không thể dùng OUTPUT clause
+            // Dùng raw SQL với SqlParameter để insert trực tiếp, không qua EF Core SaveChanges
+            var connection = _ctx.Database.GetDbConnection();
+            var wasOpen = connection.State == System.Data.ConnectionState.Open;
+            
+            try
+            {
+                if (!wasOpen)
+                {
+                    connection.Open();
+                }
+                
+                // ⭐ QUAN TRỌNG: Dùng transaction để đảm bảo atomicity với trigger
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        using (var command = connection.CreateCommand())
+                        {
+                            command.Transaction = transaction;
+                            
+                            // Tạo parameters - phải cast về DbParameter
+                            DbParameter param1 = new SqlParameter("@AccountId", sale.AccountId);
+                            DbParameter param2 = new SqlParameter("@WarehouseId", sale.WarehouseId);
+                            DbParameter param3 = new SqlParameter("@ProductCode", sale.ProductCode ?? (object)DBNull.Value);
+                            DbParameter param4 = new SqlParameter("@QuantitySold", sale.QuantitySold);
+                            DbParameter param5 = new SqlParameter("@UnitPrice", sale.UnitPrice);
+                            DbParameter param6 = new SqlParameter("@TotalAmount", sale.TotalAmount);
+                            DbParameter param7 = new SqlParameter("@SaleDate", sale.SaleDate);
+                            
+                            command.Parameters.Add(param1);
+                            command.Parameters.Add(param2);
+                            command.Parameters.Add(param3);
+                            command.Parameters.Add(param4);
+                            command.Parameters.Add(param5);
+                            command.Parameters.Add(param6);
+                            command.Parameters.Add(param7);
+                            
+                            // Execute raw SQL (không dùng OUTPUT clause để tránh conflict với trigger)
+                            // Trigger sẽ tự động trừ tồn kho và rollback nếu không đủ hàng
+                            command.CommandText = @"
+                                INSERT INTO Sales (AccountId, WarehouseId, ProductCode, QuantitySold, UnitPrice, TotalAmount, SaleDate)
+                                VALUES (@AccountId, @WarehouseId, @ProductCode, @QuantitySold, @UnitPrice, @TotalAmount, @SaleDate);
+                                SELECT CAST(SCOPE_IDENTITY() as int);";
+                            
+                            // Execute và lấy SaleId
+                            var result = command.ExecuteScalar();
+                            if (result != null && result != DBNull.Value)
+                            {
+                                if (int.TryParse(result.ToString(), out int saleId))
+                                {
+                                    sale.SaleId = saleId;
+                                }
+                            }
+                            
+                            // Commit transaction nếu thành công
+                            transaction.Commit();
+                        }
+                    }
+                    catch
+                    {
+                        // Rollback nếu có lỗi (trigger sẽ rollback nếu không đủ hàng)
+                        transaction.Rollback();
+                        throw; // Re-throw để SaleService có thể catch và xử lý
+                    }
+                }
+            }
+            finally
+            {
+                // Chỉ đóng connection nếu chúng ta đã mở nó
+                if (!wasOpen && connection.State == System.Data.ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+            }
         }
 
         // Lấy tất cả Sales

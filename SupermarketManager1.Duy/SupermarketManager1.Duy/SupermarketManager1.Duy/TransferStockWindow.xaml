@@ -3,76 +3,83 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}"
+        
         mc:Ignorable="d"
-        Title="Chuyển kho" Height="600" Width="800" Loaded="Window_Loaded">
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        Title="Chuyển kho" 
+        Height="538" Width="700" 
+        SizeToContent="Height"
+        Loaded="Window_Loaded">
 
-        <!-- Header -->
-        <Label Content="🚚 CHUYỂN KHO" Grid.Row="0" FontSize="24" FontWeight="Bold" 
-               HorizontalAlignment="Center" Margin="0,0,0,20"/>
+    <materialDesign:Card Padding="25" Margin="15">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!-- Form -->
-        <GroupBox Header="Thông tin chuyển kho" Grid.Row="1">
-            <Grid Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,25">
+               
+                <TextBlock Text="CHUYỂN KHO" 
+                           FontSize="24" FontWeight="Bold" 
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+            </StackPanel>
 
-                <!-- Kho nguồn -->
-                <Label Content="Kho nguồn *:" Grid.Row="0" Margin="0,0,0,5"/>
-                <ComboBox x:Name="FromWarehouseComboBox" Grid.Row="1" Margin="0,0,0,15"
+            <StackPanel Grid.Row="1">
+                <ComboBox x:Name="FromWarehouseComboBox" Margin="0,0,0,15"
+                          materialDesign:HintAssist.Hint="Kho nguồn *"
+                          Style="{StaticResource MaterialDesignOutlinedComboBox}"
                           DisplayMemberPath="WarehouseName" SelectedValuePath="WarehouseId"
                           SelectionChanged="FromWarehouseComboBox_SelectionChanged"/>
 
-                <!-- Kho đích -->
-                <Label Content="Kho đích *:" Grid.Row="2" Margin="0,0,0,5"/>
-                <ComboBox x:Name="ToWarehouseComboBox" Grid.Row="3" Margin="0,0,0,15"
+                <ComboBox x:Name="ToWarehouseComboBox" Margin="0,0,0,15"
+                          materialDesign:HintAssist.Hint="Kho đích *"
+                          Style="{StaticResource MaterialDesignOutlinedComboBox}"
                           DisplayMemberPath="WarehouseName" SelectedValuePath="WarehouseId"
                           SelectionChanged="ToWarehouseComboBox_SelectionChanged"/>
 
-                <!-- Sản phẩm -->
-                <Label Content="Sản phẩm *:" Grid.Row="4" Margin="0,0,0,5"/>
-                <ComboBox x:Name="ProductComboBox" Grid.Row="5" Margin="0,0,0,15"
-                          DisplayMemberPath="Product.NameP" SelectedValuePath="ProductCode"
+                <ComboBox x:Name="ProductComboBox" Margin="0,0,0,15"
+                          materialDesign:HintAssist.Hint="Sản phẩm *"
+                          Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                          DisplayMemberPath="Product.NameP" 
+                          SelectedValuePath="ProductCode"
                           SelectionChanged="ProductComboBox_SelectionChanged"/>
 
-                <!-- Thông tin tồn kho -->
-                <Label x:Name="StockInfoLabel" Content="Tồn kho: 0" Grid.Row="6" 
-                       FontWeight="Bold" Foreground="Green" Margin="0,0,0,5"/>
+                <TextBlock x:Name="StockInfoLabel" Text="Tồn kho: 0" 
+                           FontWeight="Bold" Foreground="Green" Margin="5,0,0,15"
+                           FontSize="16"/>
 
-                <!-- Số lượng -->
-                <Label Content="Số lượng chuyển *:" Grid.Row="7" Margin="0,0,0,5"/>
-                <Grid Grid.Row="8" Margin="0,0,0,15">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBox x:Name="QuantityTextBox" Grid.Column="0" Text="1" 
+
+                    <TextBox x:Name="QuantityTextBox" Grid.Column="0" Text="1"
+                             materialDesign:HintAssist.Hint="Số lượng chuyển *"
+                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
                              PreviewTextInput="QuantityTextBox_PreviewTextInput"/>
-                    <Button Content="Chuyển" Grid.Column="1" Width="100" Height="35" Margin="10,0,0,0"
-                            Click="TransferButton_Click" Background="#4CAF50" Foreground="White" 
+
+                    <Button Content="Chuyển" Grid.Column="1" Width="100" Height="48" Margin="10,-5,0,0"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            Click="TransferButton_Click" 
                             FontWeight="Bold"/>
                 </Grid>
-            </Grid>
-        </GroupBox>
+            </StackPanel>
 
-        <!-- Buttons -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-            <Button Content="Đóng" Width="100" Height="40" 
-                    Click="CloseButton_Click" Background="#9E9E9E" Foreground="White"/>
-        </StackPanel>
-    </Grid>
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <Button Content="Đóng" Width="100" Height="40" 
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Click="CloseButton_Click"/>
+            </StackPanel>
+        </Grid>
+    </materialDesign:Card>
 </Window>
-

@@ -3,67 +3,90 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}"
+        
         mc:Ignorable="d"
-        Title="Báo cáo Doanh thu" Height="700" Width="1200" Loaded="Window_Loaded">
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        Title="Báo cáo Doanh thu" Height="751" Width="1200" Loaded="Window_Loaded">
 
-        <!-- Header -->
-        <Label Content="📊 BÁO CÁO DOANH THU" Grid.Row="0" FontSize="24" FontWeight="Bold" 
-               HorizontalAlignment="Center" Margin="0,0,0,20"/>
+    <materialDesign:Card Padding="20" Margin="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!-- Filters -->
-        <GroupBox Header="Lọc báo cáo" Grid.Row="1" Margin="0,0,0,10">
-            <Grid Margin="10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
+                
+                <TextBlock Text="BÁO CÁO DOANH THU" 
+                           FontSize="24" FontWeight="Bold" 
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+            </StackPanel>
 
-                <Label Content="Kho:" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <ComboBox x:Name="WarehouseFilterComboBox" Grid.Column="1" Margin="0,0,20,0"
-                          DisplayMemberPath="WarehouseName" SelectedValuePath="WarehouseId"
-                          SelectionChanged="FilterComboBox_SelectionChanged">
-                    <ComboBoxItem Content="Tất cả" Tag="0" IsSelected="True"/>
-                </ComboBox>
 
-                <Label Content="Từ ngày:" Grid.Column="2" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <DatePicker x:Name="FromDatePicker" Grid.Column="3" Margin="0,0,20,0"
-                           SelectedDateChanged="DatePicker_SelectedDateChanged"/>
+            <GroupBox Header="Lọc báo cáo" Grid.Row="1" Margin="0,0,0,10"
+                      Style="{StaticResource MaterialDesignGroupBox}"
+                      materialDesign:ColorZoneAssist.Mode="Standard">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                <Label Content="Đến ngày:" Grid.Column="4" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <DatePicker x:Name="ToDatePicker" Grid.Column="5" Margin="0,0,0,0"
-                           SelectedDateChanged="DatePicker_SelectedDateChanged"/>
-            </Grid>
-        </GroupBox>
+                    <ComboBox x:Name="WarehouseFilterComboBox" Grid.Column="0" Margin="0,0,20,0"
+                              materialDesign:HintAssist.Hint="Lọc theo kho"
+                              Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                              DisplayMemberPath="WarehouseName" SelectedValuePath="WarehouseId"
+                              SelectionChanged="FilterComboBox_SelectionChanged">
+                        <ComboBoxItem Content="Tất cả" Tag="0" IsSelected="True"/>
+                    </ComboBox>
 
-        <!-- Summary -->
-        <GroupBox Header="Tổng kết" Grid.Row="2" Margin="0,0,0,10">
-            <Grid Margin="10">
+                    <DatePicker x:Name="FromDatePicker" Grid.Column="1" Margin="0,0,20,0"
+                                materialDesign:HintAssist.Hint="Từ ngày"
+                                Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                                SelectedDateChanged="DatePicker_SelectedDateChanged"/>
+
+                    <DatePicker x:Name="ToDatePicker" Grid.Column="2"
+                                materialDesign:HintAssist.Hint="Đến ngày"
+                                Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                                SelectedDateChanged="DatePicker_SelectedDateChanged"/>
+                </Grid>
+            </GroupBox>
+
+            <Grid Grid.Row="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
-                    <Label Content="Tổng doanh thu:" FontSize="16" FontWeight="Bold"/>
-                    <Label x:Name="TotalRevenueLabel" Content="0 VNĐ" FontSize="18" FontWeight="Bold" 
-                           Foreground="Red" Margin="10,0,0,0"/>
-                    <Label Content="Tổng số đơn:" FontSize="16" FontWeight="Bold" Margin="30,0,0,0"/>
-                    <Label x:Name="TotalOrdersLabel" Content="0" FontSize="18" FontWeight="Bold" 
-                           Foreground="Blue" Margin="10,0,0,0"/>
-                </StackPanel>
+                <materialDesign:Card Grid.Row="0" Padding="15" Margin="0,5,0,10">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock Text="Tổng doanh thu:" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="TotalRevenueLabel" Text="0 VNĐ" FontSize="18" FontWeight="Bold" 
+                                   Foreground="Red" Margin="10,0,30,0" VerticalAlignment="Center"/>
 
-                <!-- DataGrid Sales -->
-                <DataGrid x:Name="SalesDataGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True">
+                        <TextBlock Text="Tổng số đơn:" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="TotalOrdersLabel" Text="0" FontSize="18" FontWeight="Bold" 
+                                   Foreground="Blue" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </materialDesign:Card>
+
+                <DataGrid x:Name="SalesDataGrid" Grid.Row="1" 
+                          Style="{StaticResource MaterialDesignDataGrid}"
+                          HeadersVisibility="Column"
+                          IsReadOnly="True"
+                          GridLinesVisibility="None"
+                          RowHeaderWidth="0"
+                          AutoGenerateColumns="False">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Ngày bán" Binding="{Binding SaleDate, StringFormat={}{0:dd/MM/yyyy HH:mm}}" Width="150"/>
                         <DataGridTextColumn Header="Kho" Binding="{Binding Warehouse.WarehouseName}" Width="*"/>
@@ -83,13 +106,12 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
-        </GroupBox>
 
-        <!-- Buttons -->
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-            <Button Content="Đóng" Width="100" Height="40" 
-                    Click="CloseButton_Click" Background="#9E9E9E" Foreground="White"/>
-        </StackPanel>
-    </Grid>
+            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <Button Content="Đóng" Width="100" Height="40" 
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Click="CloseButton_Click"/>
+            </StackPanel>
+        </Grid>
+    </materialDesign:Card>
 </Window>
-

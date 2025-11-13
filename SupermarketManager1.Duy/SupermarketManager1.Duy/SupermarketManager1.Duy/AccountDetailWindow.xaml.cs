@@ -35,12 +35,12 @@ namespace SupermarketManager1.Duy
 
             if (IsEditMode)
             {
-                TitleLabel.Content = "Sửa thông tin tài khoản";
+                TitleLabel.Text = "Sửa thông tin tài khoản";
                 LoadAccountData();
             }
             else
             {
-                TitleLabel.Content = "Tạo tài khoản mới";
+                TitleLabel.Text = "Tạo tài khoản mới";
                 // Set mặc định nếu có
                 if (DefaultRoleId.HasValue)
                 {
@@ -96,12 +96,12 @@ namespace SupermarketManager1.Duy
             {
                 if (selectedRole.RoleName == "Manager" || selectedRole.RoleName == "Staff")
                 {
-                    WarehouseLabel.Visibility = Visibility.Visible;
+                    // WarehouseLabel.Visibility = Visibility.Visible; // Không có trong XAML
                     WarehouseComboBox.Visibility = Visibility.Visible;
                 }
                 else // Admin
                 {
-                    WarehouseLabel.Visibility = Visibility.Collapsed;
+                    // WarehouseLabel.Visibility = Visibility.Collapsed; // Không có trong XAML
                     WarehouseComboBox.Visibility = Visibility.Collapsed;
                     WarehouseComboBox.SelectedValue = null;
                 }
