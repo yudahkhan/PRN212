@@ -13,7 +13,8 @@
         
         xmlns:local="clr-namespace:SupermarketManager1.Duy"
         mc:Ignorable="d"
-        Title="Manager Dashboard" Height="632" Width="1000" Loaded="Window_Loaded">
+        Title="Bảng điều khiển Quản lý" Height="632" Width="1000" Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen">
 
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -30,18 +31,18 @@
 
                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
                     
-                    <TextBlock Text="Manager Dashboard" 
+                    <TextBlock Text="Bảng điều khiển Quản lý" 
                               FontSize="24" FontWeight="Bold"
                               VerticalAlignment="Center"
                               Foreground="{DynamicResource PrimaryHueMidBrush}"/>
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock x:Name="WelcomeLabel" Text="Welcome, " 
+                    <TextBlock x:Name="WelcomeLabel" Text="Xin chào, " 
                               FontSize="16" 
                               VerticalAlignment="Center"
                               Margin="0,0,15,0"/>
-                    <Button Content="Logout" 
+                    <Button Content="Đăng xuất" 
                             Style="{StaticResource MaterialDesignOutlinedButton}"
                             Width="100" Height="35" 
                             Click="LogoutButton_Click"/>
@@ -53,7 +54,7 @@
 
             <materialDesign:Card Padding="30" Width="450">
                 <StackPanel>
-                    <TextBlock Text="Quản lý Store của bạn" 
+                    <TextBlock Text="Quản lý cửa hàng" 
                                FontSize="18" FontWeight="Bold" Margin="0,0,0,20"
                                HorizontalAlignment="Center"
                                Foreground="{DynamicResource PrimaryHueMidBrush}"/>

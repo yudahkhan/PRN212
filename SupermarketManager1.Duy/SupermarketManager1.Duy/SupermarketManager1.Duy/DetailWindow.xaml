@@ -15,7 +15,8 @@
         Title="Chi tiết sản phẩm" 
         Height="821" Width="700" 
         SizeToContent="Height"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen">
 
     <materialDesign:Card Padding="25" Margin="15">
         <Grid>
@@ -25,60 +26,60 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock x:Name="DetailWindowModeLabel" Text="Product Details" Grid.Row="0" 
+            <TextBlock x:Name="DetailWindowModeLabel" Text="Chi tiết sản phẩm" Grid.Row="0" 
                        FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,25"
                        Foreground="{DynamicResource PrimaryHueMidBrush}"/>
 
             <StackPanel Grid.Row="1">
                 <TextBox x:Name="ProductIdTextBox" 
-                         materialDesign:HintAssist.Hint="Product Code *"
+                         materialDesign:HintAssist.Hint="Mã sản phẩm *"
                          Style="{StaticResource MaterialDesignOutlinedTextBox}"
                          Margin="0,0,0,15"/>
 
                 <TextBox x:Name="ProductNameTextBox"
-                         materialDesign:HintAssist.Hint="Name"
+                         materialDesign:HintAssist.Hint="Tên sản phẩm"
                          Style="{StaticResource MaterialDesignOutlinedTextBox}"
                          Margin="0,0,0,15"/>
 
                 <TextBox x:Name="ProductPriceTextBox"
-                         materialDesign:HintAssist.Hint="Price"
+                         materialDesign:HintAssist.Hint="Giá"
                          Style="{StaticResource MaterialDesignOutlinedTextBox}"
                          Margin="0,0,0,15"/>
 
                 <TextBox x:Name="ProductWarrantyTextBox"
-                         materialDesign:HintAssist.Hint="Warranty"
+                         materialDesign:HintAssist.Hint="Bảo hành"
                          Style="{StaticResource MaterialDesignOutlinedTextBox}"
                          Margin="0,0,0,15"/>
 
                 <TextBox x:Name="ProductDescriptionTextBox"
-                         materialDesign:HintAssist.Hint="Description"
+                         materialDesign:HintAssist.Hint="Mô tả"
                          Style="{StaticResource MaterialDesignOutlinedTextBox}"
                          Margin="0,0,0,15" 
                          Height="100" TextWrapping="Wrap" AcceptsReturn="True"
                          VerticalScrollBarVisibility="Auto"/>
 
                 <TextBox x:Name="ProductPublicationDayTextBox"
-                         materialDesign:HintAssist.Hint="Publication Day (YYYY-MM-DD)"
+                         materialDesign:HintAssist.Hint="Ngày xuất bản (YYYY-MM-DD)"
                          Style="{StaticResource MaterialDesignOutlinedTextBox}"
                          Margin="0,0,0,15"/>
 
                 <TextBox x:Name="ProductSupplierNameTextBox"
-                         materialDesign:HintAssist.Hint="Supplier Name"
+                         materialDesign:HintAssist.Hint="Nhà cung cấp"
                          Style="{StaticResource MaterialDesignOutlinedTextBox}"
                          Margin="0,0,0,15"/>
 
                 <ComboBox x:Name="CategoryComboBox"
-                          materialDesign:HintAssist.Hint="Category"
+                          materialDesign:HintAssist.Hint="Phân loại"
                           Style="{StaticResource MaterialDesignOutlinedComboBox}"
                           Margin="0,0,0,15"/>
             </StackPanel>
 
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-                <Button x:Name="QuitButton" Content="Quit" 
+                <Button x:Name="QuitButton" Content="Thoát" 
                         Width="100" Height="40" Margin="0,0,10,0" 
                         Style="{StaticResource MaterialDesignOutlinedButton}"
                         Click="QuitButton_Click"/>
-                <Button x:Name="DetailWindowButton" Content="Save" 
+                <Button x:Name="DetailWindowButton" Content="Lưu" 
                         Width="100" Height="40" 
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         Click="DetailWindowButton_Click"/>

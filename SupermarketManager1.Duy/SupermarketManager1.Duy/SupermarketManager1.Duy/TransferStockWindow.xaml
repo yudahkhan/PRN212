@@ -15,7 +15,8 @@
         Title="Chuyển kho" 
         Height="538" Width="700" 
         SizeToContent="Height"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen">
 
     <materialDesign:Card Padding="25" Margin="15">
         <Grid>

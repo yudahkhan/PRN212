@@ -20,7 +20,7 @@ namespace SupermarketManager1.Duy
         {
             if (CurrentUser.IsLoggedIn)
             {
-                WelcomeLabel.Text = $"Welcome, {CurrentUser.Account?.FullName} (Admin)";
+                WelcomeLabel.Text = $"Xin chào, {CurrentUser.Account?.FullName} (Admin)";
             }
             LoadProducts();
         }
@@ -39,7 +39,7 @@ namespace SupermarketManager1.Duy
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult answer = MessageBox.Show("Are you sure?", "Confirm?", MessageBoxButton.YesNo);
+            MessageBoxResult answer = MessageBox.Show("Bạn có chắc chắn muốn thoát?", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (answer == MessageBoxResult.Yes)
             {
                 Application.Current.Shutdown();
@@ -127,7 +127,7 @@ namespace SupermarketManager1.Duy
             Product? selected = ProductListDataGrid.SelectedItem as Product;
             if (selected == null)
             {
-                MessageBox.Show("Please selected before updating", "Select one", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Vui lòng chọn sản phẩm cần sửa!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 

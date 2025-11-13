@@ -13,7 +13,8 @@
         
         xmlns:local="clr-namespace:SupermarketManager1.Duy"
         mc:Ignorable="d"
-        Title="Quản lý Nhân viên" Height="608" Width="1000" Loaded="Window_Loaded">
+        Title="Quản lý Nhân viên" Height="608" Width="1000" Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen">
 
     <materialDesign:Card Padding="20" Margin="10">
         <Grid>
@@ -35,7 +36,7 @@
                 <Button Style="{StaticResource MaterialDesignRaisedButton}"
                         Click="CreateButton_Click" Width="120" Height="40" Margin="0,0,10,0">
                     <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="Plus" Margin="0,0,5,0"/>
+                        
                         <TextBlock Text="Tạo mới"/>
                     </StackPanel>
                 </Button>
@@ -43,7 +44,7 @@
                 <Button Style="{StaticResource MaterialDesignOutlinedButton}"
                         Click="UpdateButton_Click" Width="100" Height="40" Margin="0,0,10,0">
                     <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="Pencil" Margin="0,0,5,0"/>
+                        
                         <TextBlock Text="Sửa"/>
                     </StackPanel>
                 </Button>
@@ -52,7 +53,7 @@
                         Click="DeleteButton_Click" Width="100" Height="40" 
                         Background="Red" BorderBrush="Red">
                     <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="Delete" Margin="0,0,5,0"/>
+                       
                         <TextBlock Text="Xóa"/>
                     </StackPanel>
                 </Button>
@@ -68,7 +69,7 @@
                       AutoGenerateColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Binding="{Binding AccountId}" Width="50"/>
-                    <DataGridTextColumn Header="Username" Binding="{Binding Username}" Width="120"/>
+                    <DataGridTextColumn Header="Tên đăng nhập" Binding="{Binding Username}" Width="120"/>
                     <DataGridTextColumn Header="Họ tên" Binding="{Binding FullName}" Width="*"/>
                     <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200"/>
                     <DataGridTextColumn Header="SĐT" Binding="{Binding PhoneNumber}" Width="120"/>

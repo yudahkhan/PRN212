@@ -13,8 +13,8 @@ namespace SupermarketManager1.Duy
         {
             if (CurrentUser.IsLoggedIn)
             {
-                string storeName = CurrentUser.Account?.Warehouse?.WarehouseName ?? "Store";
-                WelcomeLabel.Text = $"Welcome, {CurrentUser.Account?.FullName} - {storeName}";
+                string storeName = CurrentUser.Account?.Warehouse?.WarehouseName ?? "Cửa hàng";
+                WelcomeLabel.Text = $"Xin chào, {CurrentUser.Account?.FullName} - {storeName}";
             }
         }
 
