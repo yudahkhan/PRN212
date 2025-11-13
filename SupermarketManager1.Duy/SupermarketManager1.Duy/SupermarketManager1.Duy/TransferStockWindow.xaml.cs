@@ -35,16 +35,8 @@ namespace SupermarketManager1.Duy
             if (CurrentUser.IsAdmin)
             {
                 warehouses = _warehouseService.GetAllWarehouses();
-<<<<<<< HEAD
-
-                // ToWarehouse should be selectable for Admin (all warehouses except the currently selected From)
-                ToWarehouseComboBox.ItemsSource = warehouses;
-                ToWarehouseComboBox.IsEnabled = true;
-                ToWarehouseComboBox.SelectedItem = null;
-=======
                 // Admin có thể chuyển giữa tất cả các kho
                 ToWarehouseComboBox.ItemsSource = warehouses;
->>>>>>> 1e6e238 (last dance v2)
             }
             else if (CurrentUser.IsManager)
             {
@@ -88,14 +80,6 @@ namespace SupermarketManager1.Duy
             if (warehouses.Count > 0)
             {
                 FromWarehouseComboBox.SelectedItem = warehouses[0];
-<<<<<<< HEAD
-                // Ensure ToWarehouse list excludes selected From by default for Admin
-                UpdateToWarehouseOptions((Warehouse)FromWarehouseComboBox.SelectedItem);
-            }
-            else
-            {
-                FromWarehouseComboBox.SelectedItem = null;
-=======
                 
                 // Nếu là Admin và đã chọn kho nguồn, cập nhật danh sách kho đích
                 if (CurrentUser.IsAdmin && warehouses[0] is Warehouse firstWarehouse)
@@ -107,19 +91,12 @@ namespace SupermarketManager1.Duy
                     
                     ToWarehouseComboBox.ItemsSource = availableToWarehouses;
                 }
->>>>>>> 1e6e238 (last dance v2)
             }
         }
 
         private void FromWarehouseComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // When From changes we must refresh available products AND update To list (so user can't pick same warehouse)
             LoadProducts();
-<<<<<<< HEAD
-            if (FromWarehouseComboBox.SelectedItem is Warehouse fromWarehouse)
-            {
-                UpdateToWarehouseOptions(fromWarehouse);
-=======
             
             // Khi Admin chọn kho nguồn, cập nhật danh sách kho đích (loại trừ kho nguồn)
             if (CurrentUser.IsAdmin && FromWarehouseComboBox.SelectedItem is Warehouse selectedFromWarehouse)
@@ -131,7 +108,6 @@ namespace SupermarketManager1.Duy
                 
                 ToWarehouseComboBox.ItemsSource = availableToWarehouses;
                 ToWarehouseComboBox.SelectedItem = null; // Reset selection
->>>>>>> 1e6e238 (last dance v2)
             }
         }
 
@@ -147,27 +123,6 @@ namespace SupermarketManager1.Duy
                         MessageBoxButton.OK, MessageBoxImage.Warning);
                     ToWarehouseComboBox.SelectedItem = null;
                 }
-            }
-        }
-
-        // Ensure ToWarehouseComboBox contains valid targets given a selected From warehouse.
-        private void UpdateToWarehouseOptions(Warehouse fromWarehouse)
-        {
-            // If To combobox is disabled (Manager fixed store) do nothing
-            if (ToWarehouseComboBox.IsEnabled == false)
-                return;
-
-            // Get all warehouses and exclude the selected From
-            var all = _warehouseService.GetAllWarehouses() ?? new List<Warehouse>();
-            var targets = all.Where(w => w.WarehouseId != fromWarehouse.WarehouseId).ToList();
-
-            ToWarehouseComboBox.ItemsSource = targets;
-
-            // If previously selected To is now invalid, clear it
-            if (ToWarehouseComboBox.SelectedItem is Warehouse selected &&
-                targets.All(t => t.WarehouseId != selected.WarehouseId))
-            {
-                ToWarehouseComboBox.SelectedItem = null;
             }
         }
 
@@ -187,7 +142,7 @@ namespace SupermarketManager1.Duy
             {
                 _availableProducts.Clear();
                 ProductComboBox.ItemsSource = null;
-                StockInfoLabel.Text = "Tồn kho: 0";
+                StockInfoLabel.Text = "Stock: 0";
             }
         }
 
