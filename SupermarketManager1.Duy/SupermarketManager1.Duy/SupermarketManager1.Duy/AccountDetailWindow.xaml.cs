@@ -29,12 +29,13 @@ namespace SupermarketManager1.Duy
             // Load Roles
             var allRoles = _roleService.GetAllRoles();
             
-            // Manager chỉ được chọn Staff hoặc Manager, không được chọn Admin
+            // Manager chỉ được chọn Staff, không được chọn Manager hoặc Admin
+            // (vì 1 cửa hàng đã có 1 Manager rồi, không thể có Manager thứ 2)
             List<Role> availableRoles;
             if (CurrentUser.IsManager)
             {
-                // Manager chỉ thấy Manager và Staff
-                availableRoles = allRoles.Where(r => r.RoleName == "Manager" || r.RoleName == "Staff").ToList();
+                // Manager: chỉ được tạo/sửa Staff (vì store đã có 1 Manager rồi)
+                availableRoles = allRoles.Where(r => r.RoleName == "Staff").ToList();
             }
             else if (CurrentUser.IsAdmin)
             {
@@ -95,6 +96,11 @@ namespace SupermarketManager1.Duy
                 if (DefaultWarehouseId.HasValue)
                 {
                     WarehouseComboBox.SelectedValue = DefaultWarehouseId.Value;
+                    // ⭐ Nếu Manager tạo account, set cứng Warehouse và disable
+                    if (CurrentUser.IsManager)
+                    {
+                        WarehouseComboBox.IsEnabled = false; // Không cho đổi warehouse
+                    }
                 }
             }
 
@@ -510,6 +516,33 @@ namespace SupermarketManager1.Duy
                     MessageBox.Show("Please select Store for " + role.RoleName + "!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     WarehouseComboBox.Focus();
                     return false;
+                }
+
+                // ⭐ Kiểm tra nếu role là Manager và Store đã có Manager khác
+                if (role.RoleName == "Manager" && WarehouseComboBox.SelectedValue is int selectedWarehouseId)
+                {
+                    // Kiểm tra xem Store mới đã có Manager chưa
+                    var selectedWarehouse = _warehouseService.GetWarehouseById(selectedWarehouseId);
+                    if (selectedWarehouse != null && selectedWarehouse.ManagerId.HasValue)
+                    {
+                        // Nếu đang edit và Manager hiện tại đang quản lý Store này, cho phép
+                        bool isCurrentManager = IsEditMode && EditedAccount != null && 
+                                               EditedAccount.AccountId == selectedWarehouse.ManagerId.Value;
+                        
+                        // Nếu Store đã có Manager khác (không phải Manager hiện tại đang edit)
+                        if (!isCurrentManager)
+                        {
+                            var existingManager = _accountService.GetAccountById(selectedWarehouse.ManagerId.Value);
+                            string managerName = existingManager?.FullName ?? "Unknown";
+                            MessageBox.Show(
+                                $"Store '{selectedWarehouse.WarehouseName}' already has a manager: {managerName}!\n\nEach Store can only have 1 Manager. Please select another Store.",
+                                "Error",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+                            WarehouseComboBox.Focus();
+                            return false;
+                        }
+                    }
                 }
             }
 

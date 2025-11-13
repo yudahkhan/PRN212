@@ -138,7 +138,33 @@ namespace SupermarketManager1.Duy
                 return false;
             }
 
-    
+            // Validate Publication Day - không được hơn realtime
+            if (ProductPublicationDayDatePicker.SelectedDate.HasValue)
+            {
+                DateTime selectedDate = ProductPublicationDayDatePicker.SelectedDate.Value.Date;
+                DateTime today = DateTime.Today;
+                
+                if (selectedDate > today)
+                {
+                    MessageBox.Show("Publication Date cannot be in the future!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    ProductPublicationDayDatePicker.Focus();
+                    return false;
+                }
+            }
+
+            // Validate Product Code - không được trùng khi tạo mới
+            if (EditedOne == null)
+            {
+                string productCode = ProductIdTextBox.Text.Trim();
+                var existingProduct = _productService.GetProductByCode(productCode);
+                if (existingProduct != null)
+                {
+                    MessageBox.Show($"Product Code '{productCode}' already exists! Please use a different code.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    ProductIdTextBox.Focus();
+                    ProductIdTextBox.SelectAll();
+                    return false;
+                }
+            }
 
             return true;
         }

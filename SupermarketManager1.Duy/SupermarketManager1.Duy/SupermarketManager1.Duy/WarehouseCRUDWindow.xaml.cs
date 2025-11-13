@@ -64,9 +64,18 @@ namespace SupermarketManager1.Duy
                 return;
             }
 
-            // Không cho xóa Kho Trung Tâm
+            // Không cho xóa Kho Trung Tâm (Central Warehouse đầu tiên duy nhất)
             if (selected.Type == "Central")
             {
+                // Kiểm tra xem có phải Central Warehouse đầu tiên (duy nhất) không
+                var centralWarehouse = _warehouseService.GetCentralWarehouse();
+                if (centralWarehouse != null && centralWarehouse.WarehouseId == selected.WarehouseId)
+                {
+                    MessageBox.Show("Cannot delete the default Central Warehouse!\n\nThis is the only Central Warehouse in the system.", "Error", 
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                // Nếu có nhiều Central Warehouse, có thể xóa các Central khác (nhưng không nên có)
                 MessageBox.Show("Cannot delete Central Warehouse!", "Error", 
                     MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
