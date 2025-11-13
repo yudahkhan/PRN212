@@ -12,7 +12,8 @@
         FontFamily="{materialDesign:MaterialDesignFont}"
         
         mc:Ignorable="d"
-        Title="Báo cáo Doanh thu" Height="751" Width="1200" Loaded="Window_Loaded">
+        Title="Báo cáo Doanh thu" Height="751" Width="1200" Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen">
 
     <materialDesign:Card Padding="20" Margin="10">
         <Grid>

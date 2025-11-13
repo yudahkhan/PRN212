@@ -11,8 +11,8 @@
                 <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="Lime" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
-            <!-- Giữ lại các style cũ nếu cần -->
+
+            <!-- Cái này style cũ nhen -->
             <Style x:Key="DetailLabel" TargetType="Label">
                 <Setter Property="Foreground" Value="#ffef00"/>
                 <Setter Property="FontSize" Value="20"/>

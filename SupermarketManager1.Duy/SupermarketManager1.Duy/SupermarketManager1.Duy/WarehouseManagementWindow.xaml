@@ -12,7 +12,8 @@
         FontFamily="{materialDesign:MaterialDesignFont}"
         
         mc:Ignorable="d"
-        Title="Warehouse Management" Height="604" Width="900" Loaded="Window_Loaded">
+        Title="Quản lý Kho hàng" Height="604" Width="900" Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen">
 
     <materialDesign:Card Padding="20" Margin="10">
         <Grid>

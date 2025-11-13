@@ -32,9 +32,7 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="37,0,0,25">
-                <materialDesign:PackIcon Kind="ClipboardEditOutline" Width="28" Height="28" 
-                                         VerticalAlignment="Center" Margin="0,0,10,0"
-                                         Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+                
                 <TextBlock Text="ĐIỀU CHỈNH SỐ LƯỢNG TỒN KHO" 
                            FontSize="18" FontWeight="Bold" 
                            VerticalAlignment="Center"

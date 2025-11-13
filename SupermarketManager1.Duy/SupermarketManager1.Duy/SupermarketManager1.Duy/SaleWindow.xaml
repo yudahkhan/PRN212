@@ -12,7 +12,8 @@
         FontFamily="{materialDesign:MaterialDesignFont}"
         
         mc:Ignorable="d"
-        Title="Bán hàng" Height="719" Width="1200" Loaded="Window_Loaded">
+        Title="Bán hàng" Height="719" Width="1200" Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen">
     
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -43,7 +44,7 @@
                     </Grid.RowDefinitions>
 
                     <TextBox x:Name="SearchTextBox" Grid.Row="0" Margin="0,0,0,10"
-                             materialDesign:HintAssist.Hint="🔍 Tìm kiếm sản phẩm..."
+                             materialDesign:HintAssist.Hint="Tìm kiếm sản phẩm..."
                              materialDesign:HintAssist.IsFloating="False"
                              Style="{StaticResource MaterialDesignOutlinedTextBox}"
                              TextChanged="SearchTextBox_TextChanged"/>

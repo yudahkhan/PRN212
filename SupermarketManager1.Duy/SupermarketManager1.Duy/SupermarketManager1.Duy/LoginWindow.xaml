@@ -24,7 +24,7 @@
                 
 
                 <!-- Title -->
-                <TextBlock Text="SUPERMARKET MANAGEMENT" 
+                <TextBlock Text="Hệ thống Quản lý Siêu thị" 
                           FontSize="24" 
                           FontWeight="Bold"
                           HorizontalAlignment="Center"

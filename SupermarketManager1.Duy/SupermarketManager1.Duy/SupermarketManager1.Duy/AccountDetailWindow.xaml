@@ -14,7 +14,8 @@
         mc:Ignorable="d"
         Title="Chi tiết Tài khoản" 
         Height="762" Width="600" 
-        SizeToContent="Height" Loaded="Window_Loaded">
+        SizeToContent="Height" Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen">
 
     <materialDesign:Card Padding="25" Margin="15">
         <Grid>
@@ -25,9 +26,7 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,25">
-                <materialDesign:PackIcon Kind="AccountDetails" Width="28" Height="28" 
-                                         VerticalAlignment="Center" Margin="0,0,10,0"
-                                         Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+                
                 <TextBlock x:Name="TitleLabel" Text="Tạo tài khoản mới" 
                            FontSize="22" FontWeight="Bold" 
                            VerticalAlignment="Center"

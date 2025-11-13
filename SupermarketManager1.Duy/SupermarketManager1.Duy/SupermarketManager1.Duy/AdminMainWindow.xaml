@@ -6,7 +6,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:SupermarketManager1.Duy"
         mc:Ignorable="d"
-        Title="Admin Dashboard - Product Management" 
+        Title="Bảng điều khiển Admin - Quản lý Sản phẩm" 
         Height="862" Width="1200" 
         WindowStartupLocation="CenterScreen"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -16,7 +16,8 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded"
+        >
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -32,7 +33,7 @@
                 </Grid.ColumnDefinitions>
                 
                 <StackPanel Grid.Column="0">
-                    <TextBlock Text="Admin Dashboard" 
+                    <TextBlock Text="Bảng điều khiển Admin" 
                               FontSize="24" 
                               FontWeight="Bold"
                               Foreground="{DynamicResource PrimaryHueMidBrush}"/>
@@ -130,7 +131,7 @@
                                   Foreground="{DynamicResource PrimaryHueMidBrush}"/>
                         
                         <Button x:Name="CreateButton" 
-                               Content="➕ TẠO MỚI" 
+                               Content="Tạo mới" 
                                Style="{StaticResource MaterialDesignRaisedButton}"
                                Height="45" 
                                Margin="0,0,0,8" 
@@ -138,14 +139,14 @@
                                FontWeight="SemiBold"/>
                         
                         <Button x:Name="UpdateButton" 
-                               Content="✏️ SỬA" 
+                               Content="Sửa" 
                                Style="{StaticResource MaterialDesignOutlinedButton}"
                                Height="45" 
                                Margin="0,0,0,8" 
                                Click="UpdateButton_Click"/>
                         
                         <Button x:Name="DeleteButton" 
-                               Content="🗑️ XÓA" 
+                               Content="Xóa" 
                                Style="{StaticResource MaterialDesignOutlinedButton}"
                                Height="45" 
                                Margin="0,0,0,15" 
@@ -161,7 +162,7 @@
                                   Foreground="{DynamicResource PrimaryHueMidBrush}"/>
                         
                         <Button x:Name="ManageWarehouseButton" 
-                               Content="📦 Tồn kho" 
+                               Content="Tồn kho" 
                                Style="{StaticResource MaterialDesignRaisedButton}"
                                Height="45" 
                                Margin="0,0,0,8" 
@@ -169,7 +170,7 @@
                                Background="#FF9800"/>
                         
                         <Button x:Name="TransferStockButton" 
-                               Content="🚚 Chuyển kho" 
+                               Content="Chuyển kho" 
                                Style="{StaticResource MaterialDesignRaisedButton}"
                                Height="45" 
                                Margin="0,0,0,8" 
@@ -177,7 +178,7 @@
                                Background="#FF5722"/>
                         
                         <Button x:Name="ManageWarehouseCRUDButton" 
-                               Content="🏢 Kho/Cửa hàng" 
+                               Content="Kho/Cửa hàng" 
                                Style="{StaticResource MaterialDesignRaisedButton}"
                                Height="45" 
                                Margin="0,0,0,8" 
@@ -185,7 +186,7 @@
                                Background="#9C27B0"/>
                         
                         <Button x:Name="ManageAccountButton" 
-                               Content="👥 Tài khoản" 
+                               Content="Tài khoản" 
                                Style="{StaticResource MaterialDesignRaisedButton}"
                                Height="45" 
                                Margin="0,0,0,8" 
@@ -193,7 +194,7 @@
                                Background="#2196F3"/>
                         
                         <Button x:Name="ReportButton" 
-                               Content="📊 Báo cáo" 
+                               Content="Báo cáo" 
                                Style="{StaticResource MaterialDesignRaisedButton}"
                                Height="45" 
                                Margin="0,0,0,0" 

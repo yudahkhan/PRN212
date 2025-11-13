@@ -15,7 +15,8 @@
         Title="Chi tiết Kho/Cửa hàng" 
         Height="490" Width="600" 
         SizeToContent="Height"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen">
 
     <materialDesign:Card Padding="25" Margin="15">
         <Grid>

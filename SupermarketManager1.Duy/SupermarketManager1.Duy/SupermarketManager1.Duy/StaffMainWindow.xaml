@@ -13,7 +13,8 @@
         
         xmlns:local="clr-namespace:SupermarketManager1.Duy"
         mc:Ignorable="d"
-        Title="Staff Dashboard - Bán hàng" Height="624" Width="1000" Loaded="Window_Loaded">
+        Title="Bảng điều khiển Nhân viên - Bán hàng" Height="624" Width="1000" Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen">
 
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -30,18 +31,18 @@
 
                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
                     
-                    <TextBlock Text="Staff Dashboard - Bán hàng" 
+                    <TextBlock Text="Bảng điều khiển Nhân viên - Bán hàng" 
                               FontSize="24" FontWeight="Bold"
                               VerticalAlignment="Center"
                               Foreground="{DynamicResource PrimaryHueMidBrush}"/>
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock x:Name="WelcomeLabel" Text="Welcome, " 
+                    <TextBlock x:Name="WelcomeLabel" Text="Xin chào, " 
                               FontSize="16" 
                               VerticalAlignment="Center"
                               Margin="0,0,15,0"/>
-                    <Button Content="Logout" 
+                    <Button Content="Đăng xuất" 
                             Style="{StaticResource MaterialDesignOutlinedButton}"
                             Width="100" Height="35" 
                             Click="LogoutButton_Click"/>
@@ -63,7 +64,7 @@
                             Style="{StaticResource MaterialDesignRaisedButton}"
                             FontSize="16" FontWeight="Bold" Margin="0,5">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="CashRegister" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                            
                             <TextBlock Text="Bán hàng"/>
                         </StackPanel>
                     </Button>
@@ -73,7 +74,7 @@
                             Style="{StaticResource MaterialDesignRaisedButton}"
                             FontSize="16" FontWeight="Bold" Margin="0,5">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="PackageVariant" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                            
                             <TextBlock Text="Xem Tồn kho"/>
                         </StackPanel>
                     </Button>
