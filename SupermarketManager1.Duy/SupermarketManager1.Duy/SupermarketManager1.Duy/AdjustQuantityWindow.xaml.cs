@@ -18,8 +18,8 @@ namespace SupermarketManager1.Duy
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ProductCodeLabel.Content = ProductCode;
-            CurrentQuantityLabel.Content = CurrentQuantity.ToString();
+            ProductCodeLabel.Text = ProductCode;
+            CurrentQuantityLabel.Text = CurrentQuantity.ToString();
             NewQuantityTextBox.Text = CurrentQuantity.ToString();
             NewQuantityTextBox.Focus();
             NewQuantityTextBox.SelectAll();

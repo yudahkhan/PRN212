@@ -32,6 +32,25 @@ namespace SupperMarket.BLL.Service
             return _repo.GetStores();
         }
 
+        // Create Warehouse
+        public void CreateWarehouse(Warehouse warehouse)
+        {
+            _repo.Create(warehouse);
+        }
+
+        // Update Warehouse
+        public void UpdateWarehouse(Warehouse warehouse)
+        {
+            _repo.Update(warehouse);
+        }
+
+        // Delete Warehouse
+        public void DeleteWarehouse(Warehouse warehouse)
+        {
+            _repo.Delete(warehouse);
+        }
+    }
+
         public void CreateStore(Warehouse store)
         {
             _repo.Create(store);

@@ -10,7 +10,7 @@ namespace SupperMarket.DAL.Repositories
 {
     public class ProductRepo
     {
-        private SupermarketDb3Context _ctx;
+        private SupermarketDb3Context? _ctx;
         public List<Product> GetAll()
         {
             _ctx = new();
@@ -30,9 +30,37 @@ namespace SupperMarket.DAL.Repositories
             _ctx.Products.Update(obj);
             _ctx.SaveChanges();
         }
-        public void Delete(Product obj)
+        public void Delete(Product obj, bool deleteInventory = false)
         {
             _ctx = new();
+            
+            // Kiểm tra xem Product có đang được sử dụng trong Inventory không
+            bool hasInventory = _ctx.Inventories.Any(i => i.ProductCode == obj.ProductCode);
+            if (hasInventory)
+            {
+                if (deleteInventory)
+                {
+                    // Xóa tất cả tồn kho của sản phẩm này
+                    var inventories = _ctx.Inventories.Where(i => i.ProductCode == obj.ProductCode).ToList();
+                    _ctx.Inventories.RemoveRange(inventories);
+                }
+                else
+                {
+                    throw new InvalidOperationException(
+                        $"Không thể xóa sản phẩm '{obj.NameP}' vì sản phẩm này đang có trong tồn kho. " +
+                        "Vui lòng xóa tất cả tồn kho của sản phẩm này trước khi xóa sản phẩm.");
+                }
+            }
+
+            // Kiểm tra xem Product có đang được sử dụng trong Sales không
+            bool hasSales = _ctx.Sales.Any(s => s.ProductCode == obj.ProductCode);
+            if (hasSales)
+            {
+                throw new InvalidOperationException(
+                    $"Không thể xóa sản phẩm '{obj.NameP}' vì sản phẩm này đã có lịch sử bán hàng. " +
+                    "Không thể xóa sản phẩm đã có giao dịch.");
+            }
+
             _ctx.Products.Remove(obj);
             _ctx.SaveChanges();   
         }

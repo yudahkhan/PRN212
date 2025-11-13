@@ -10,7 +10,7 @@ namespace SupperMarket.DAL.Repositories
 {
     public class InventoryRepo
     {
-        private SupermarketDb3Context _ctx;
+        private SupermarketDb3Context? _ctx;
 
         // Lấy tất cả inventory của 1 kho
         public List<Inventory> GetByWarehouse(int warehouseId)

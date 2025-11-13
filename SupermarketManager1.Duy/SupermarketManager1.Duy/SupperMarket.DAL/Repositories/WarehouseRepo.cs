@@ -1,4 +1,5 @@
-﻿using SupperMarket.DAL.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SupperMarket.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +10,22 @@ namespace SupperMarket.DAL.Repositories
 {
     public class WarehouseRepo
     {
-        private SupermarketDb3Context _ctx;
+        private SupermarketDb3Context? _ctx;
 
         public List<Warehouse> GetAll()
         {
             _ctx = new();
-            return _ctx.Warehouses.ToList();
+            return _ctx.Warehouses
+                .Include(w => w.Manager)
+                .ToList();
         }
 
         public Warehouse? GetById(int id)
         {
             _ctx = new();
-            return _ctx.Warehouses.FirstOrDefault(w => w.WarehouseId == id);
+            return _ctx.Warehouses
+                .Include(w => w.Manager)
+                .FirstOrDefault(w => w.WarehouseId == id);
         }
 
         public Warehouse? GetCentralWarehouse()
@@ -35,24 +40,27 @@ namespace SupperMarket.DAL.Repositories
             return _ctx.Warehouses.Where(w => w.Type == "Store").ToList();
         }
 
-        public void Create(Warehouse obj)
+        // Create Warehouse
+        public void Create(Warehouse warehouse)
         {
             _ctx = new();
-            _ctx.Warehouses.Add(obj);
+            _ctx.Warehouses.Add(warehouse);
             _ctx.SaveChanges();
         }
 
-        public void Update(Warehouse obj)
+        // Update Warehouse
+        public void Update(Warehouse warehouse)
         {
             _ctx = new();
-            _ctx.Warehouses.Update(obj);
+            _ctx.Warehouses.Update(warehouse);
             _ctx.SaveChanges();
         }
 
-        public void Delete(Warehouse obj)
+        // Delete Warehouse
+        public void Delete(Warehouse warehouse)
         {
             _ctx = new();
-            _ctx.Warehouses.Remove(obj);
+            _ctx.Warehouses.Remove(warehouse);
             _ctx.SaveChanges();
         }
     }
