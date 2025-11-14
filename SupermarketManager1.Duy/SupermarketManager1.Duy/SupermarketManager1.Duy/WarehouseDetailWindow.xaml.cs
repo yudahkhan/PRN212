@@ -160,7 +160,7 @@ namespace SupermarketManager1.Duy
                 warehouse.WarehouseName = WarehouseNameTextBox.Text.Trim();
                 warehouse.Address = string.IsNullOrWhiteSpace(AddressTextBox.Text) ? null : AddressTextBox.Text.Trim();
 
-                // ⭐ Nếu đang edit Central Warehouse, giữ nguyên Type
+                // Nếu đang edit Central Warehouse, giữ nguyên Type
                 bool isEditingCentral = IsEditMode && EditedWarehouse?.Type == "Central";
                 bool isEditingStore = IsEditMode && EditedWarehouse?.Type == "Store";
                 
@@ -207,7 +207,7 @@ namespace SupermarketManager1.Duy
                     // Tạo cửa hàng mới
                     _warehouseService.CreateWarehouse(warehouse);
                     
-                    // ⭐ Nếu là Store và có Manager, cập nhật WarehouseId cho Manager
+                    // Nếu là Store và có Manager, cập nhật WarehouseId cho Manager
                     if (warehouse.Type == "Store" && warehouse.ManagerId.HasValue)
                     {
                         var manager = _accountService.GetAccountById(warehouse.ManagerId.Value);
@@ -261,7 +261,7 @@ namespace SupermarketManager1.Duy
                         return false;
                     }
                     
-                    // ⭐ Kiểm tra Manager chỉ quản lý được 1 Store
+                    // Kiểm tra Manager chỉ quản lý được 1 Store
                     if (ManagerComboBox.SelectedItem is Account selectedManager)
                     {
                         // Kiểm tra xem Manager này đã quản lý Store khác chưa
