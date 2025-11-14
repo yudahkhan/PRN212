@@ -181,7 +181,7 @@ namespace SupermarketManager1.Duy
             {
                 if (selectedRole.RoleName == "Manager")
                 {
-                    // ⭐ Khi tạo mới Manager: ẩn Store (vì Manager không bắt buộc phải chọn cửa hàng)
+                    // Khi tạo mới Manager: ẩn Store (vì Manager không bắt buộc phải chọn cửa hàng)
                     // Khi edit Manager: hiển thị Store (để có thể xem/sửa cửa hàng)
                     if (IsEditMode)
                     {
@@ -553,7 +553,7 @@ namespace SupermarketManager1.Duy
                 return false;
             }
 
-            // ⭐ Kiểm tra nếu đang edit và cố gắng đổi thành Admin (nếu tài khoản hiện tại không phải Admin)
+            // Kiểm tra nếu đang edit và cố gắng đổi thành Admin (nếu tài khoản hiện tại không phải Admin)
             if (IsEditMode && RoleComboBox.SelectedItem is Role newRole && newRole.RoleName == "Admin")
             {
                 // Kiểm tra xem tài khoản hiện tại có phải Admin không
@@ -578,7 +578,7 @@ namespace SupermarketManager1.Duy
                     return false;
                 }
 
-                // ⭐ Kiểm tra nếu role là Manager và Store đã có Manager khác
+                // Kiểm tra nếu role là Manager và Store đã có Manager khác
                 if (role.RoleName == "Manager" && WarehouseComboBox.SelectedValue is int selectedWarehouseId)
                 {
                     // Kiểm tra xem Store mới đã có Manager chưa
